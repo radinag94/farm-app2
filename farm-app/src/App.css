@@ -1,0 +1,29 @@
+body {
+  font-family: "Cabin", sans-serif;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* color: #595757; */
+}
+html {
+  scroll-behavior: smooth;
+}
+
+/* a {
+  text-decoration: none;
+}
+header {
+  border-bottom: 1px solid #e2e8f0;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  height: 10vh;
+} */
