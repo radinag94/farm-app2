@@ -3,6 +3,9 @@ import { useFarmDetailsLogic } from "./FarmDetailsPage.logic";
 import { useFields } from "../../hooks/useFields";
 import FieldCard from "../FieldsPage/FieldCard/FieldCard";
 import { useMachines } from "../../hooks/useMachines";
+
+import "leaflet/dist/leaflet.css";
+
 const FarmDetailsPage: React.FC = () => {
   console.log("FarmDetailsPage rendered");
 
@@ -23,9 +26,12 @@ const FarmDetailsPage: React.FC = () => {
       {farmDetails ? (
         <>
           <p>Farm Name: {farmDetails.name}</p>
+
           <p>Location: {JSON.stringify(farmDetails.location)}</p>
+          <div id="map" style={{ height: "400px", width: "100%" }}></div>
           <p>Created At: {farmDetails.createdAt}</p>
           <p>Updated At: {farmDetails.updatedAt}</p>
+
           {associatedMachines.length > 0 && (
             <div>
               <h3>Associated Machines:</h3>
