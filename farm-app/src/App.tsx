@@ -11,44 +11,38 @@ import FarmPage from "./pages/FarmsPage/FarmsPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import { useAuth } from "./auth/AuthProvider";
 import FieldDetailsPage from "./pages/FieldDetailsPage/FieldDetailsPage";
+import { AuthProvider } from "./auth/AuthProvider";
 
 function App() {
-  const { isAuthenticated } = useAuth();
-
   return (
     <>
       <BrowserRouter>
-        <BaseLayout>
-          <Routes>
-            <Route path={routes.welcome} element={<LandingPage />} />
+        <AuthProvider>
+          <BaseLayout>
+            <Routes>
+              <Route path={routes.welcome} element={<LandingPage />} />
 
-            {isAuthenticated && (
-              <>
-                <Route path={routes.home} element={<HomePage />} />
-                <Route path={routes.farm} element={<FarmPage />} />
-                <Route
-                  path={routes.farmDetails}
-                  element={<FarmDetailsPage />}
-                />
-                <Route path={routes.field} element={<FieldPage />} />
-                <Route
-                  path={routes.fieldDetails}
-                  element={<FieldDetailsPage />}
-                />
-                <Route path={routes.machine} element={<Machine />} />
-                <Route
-                  path={routes.fieldCultivation}
-                  element={<FieldCultivation />}
-                />
-                <Route path={routes.crop} element={<Machine />} />
-                <Route path={routes.soil} element={<Machine />} />
-                <Route path={routes.processType} element={<Machine />} />
-              </>
-            )}
+              <Route path={routes.home} element={<HomePage />} />
+              <Route path={routes.farm} element={<FarmPage />} />
+              <Route path={routes.farmDetails} element={<FarmDetailsPage />} />
+              <Route path={routes.field} element={<FieldPage />} />
+              <Route
+                path={routes.fieldDetails}
+                element={<FieldDetailsPage />}
+              />
+              <Route path={routes.machine} element={<Machine />} />
+              <Route
+                path={routes.fieldCultivation}
+                element={<FieldCultivation />}
+              />
+              <Route path={routes.crop} element={<Machine />} />
+              <Route path={routes.soil} element={<Machine />} />
+              <Route path={routes.processType} element={<Machine />} />
 
-            <Route path={routes.notFound} element={<NotFoundPage />} />
-          </Routes>
-        </BaseLayout>
+              <Route path={routes.notFound} element={<NotFoundPage />} />
+            </Routes>
+          </BaseLayout>
+        </AuthProvider>
       </BrowserRouter>
     </>
   );

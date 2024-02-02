@@ -10,6 +10,6 @@ export const routes = {
     soil: "/soil",
     processType: "/process-type",
     fieldCultivation:"/field-cultivation",
-    notFound: "/*",
+    notFound: "*",
   };
   
