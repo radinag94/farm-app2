@@ -1,13 +1,13 @@
 import React from "react";
-import { useFieldCultivations } from "../components/hooks/useFieldCultivations";
-import { useFields } from "../components/hooks/useFields";
-import { useCrops } from "../components/hooks/useCrops";
-import { useProcessTypes } from "../components/hooks/useProcessTypes";
-import { useGrowingPeriods } from "../components/hooks/useGrowingPeriods";
-import { useMachines } from "../components/hooks/useMachines";
+import { useFieldCultivations } from "../hooks/useFieldCultivations";
+import { useFields } from "../hooks/useFields";
+import { useCrops } from "../hooks/useCrops";
+import { useProcessTypes } from "../hooks/useProcessTypes";
+import { useGrowingPeriods } from "../hooks/useGrowingPeriods";
+import { useMachines } from "../hooks/useMachines";
 import EmptyList from "../components/EmptyList/EmptyListMessage";
-import GrowingPeriodService from "../components/growing-period/GrowingPeriodService";
-import { useFarms } from "../components/hooks/useFarms";
+import GrowingPeriodService from "../services/GrowingPeriodService";
+import { useFarms } from "../hooks/useFarms";
 
 function FieldCultivation() {
   const fields = useFields();
@@ -16,7 +16,7 @@ function FieldCultivation() {
   const processTypes = useProcessTypes();
   const machines = useMachines();
   const fieldCultivations = useFieldCultivations();
-  const farms = useFarms()
+  const farms = useFarms();
 
   return (
     <>
@@ -43,7 +43,7 @@ function FieldCultivation() {
 
           const associatedFarm = farms.find(
             (farm) => farm.id === associatedField?.farmId
-          )
+          );
 
           return (
             <div key={cultivation.id}>

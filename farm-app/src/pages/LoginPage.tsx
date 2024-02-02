@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import LoginForm from "../components/Forms/LoginForm";
-import { LoginFormData } from "../components/Forms/LoginForm";
+import LoginForm from "../components/Forms/LoginForm/LoginForm";
+import { LoginFormData } from "../components/Forms/LoginForm/LoginForm";
 
 interface LoginPageProps {}
 const LoginPageContainer = styled.div`

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import SignUpForm from "../components/Forms/SignUpForm";
-import { FormData } from "../components/Forms/SignUpForm";
+import SignUpForm from "../components/Forms/SignUpForm/SignUpForm";
+import { FormData } from "../components/Forms/SignUpForm/SignUpForm";
 
 interface SignUpPageProps {}
 
