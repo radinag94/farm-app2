@@ -1,57 +1,85 @@
 import { StyledFarmDetailsPage } from "./FarmDetailsPage.style";
 import { useFarmDetailsLogic } from "./FarmDetailsPage.logic";
-import { useFields } from "../../hooks/useFields";
 import FieldCard from "../FieldsPage/FieldCard/FieldCard";
-import { useMachines } from "../../hooks/useMachines";
-
+import { FarmDetailsTitle } from "./FarmDetailsPage.style";
+import { FarmDetailsContainer } from "./FarmDetailsPage.style";
+import Button from "../../ui-elements/button";
+import { StyledMapContainer } from "./FarmDetailsPage.style";
+import { InfoContainer } from "./FarmDetailsPage.style";
+import { StyledMapWithInfoContainer } from "./FarmDetailsPage.style";
+import { SmallFieldCardContainer } from "../FieldsPage/FieldCard/FieldCard.style";
+import { AssociatedStuff } from "./FarmDetailsPage.style";
 import "leaflet/dist/leaflet.css";
 
 const FarmDetailsPage: React.FC = () => {
   console.log("FarmDetailsPage rendered");
 
-  const { farmDetails, handleDeleteFarm } = useFarmDetailsLogic();
-  const fields = useFields();
-  const machines = useMachines();
-  const associatedFields = fields.filter(
-    (field) => field.farmId === farmDetails?.id
-  );
-  console.log(associatedFields);
-  const associatedMachines = machines.filter(
-    (machine) => machine.farmId === farmDetails?.id
-  );
+  const {handleDeleteFarm,farmDetails,showFields,
+    showMachines,
+    associatedMachines, toggleShowFields,associatedFields,
+    toggleShowMachines } = useFarmDetailsLogic();
+  
   return (
     <StyledFarmDetailsPage>
-      <h2>Farm Details Page</h2>
-      <button onClick={handleDeleteFarm}>Delete Farm</button>
       {farmDetails ? (
-        <>
+        <FarmDetailsContainer>
+          <FarmDetailsTitle>Farm Details Page</FarmDetailsTitle>
+
+          <Button
+            label="Delete farm"
+            color="#ef5353"
+            onClick={handleDeleteFarm}
+          ></Button>
+
           <p>Farm Name: {farmDetails.name}</p>
 
           <p>Location: {JSON.stringify(farmDetails.location)}</p>
-          <div id="map" style={{ height: "400px", width: "100%" }}></div>
-          <p>Created At: {farmDetails.createdAt}</p>
-          <p>Updated At: {farmDetails.updatedAt}</p>
+          <StyledMapWithInfoContainer>
+              <StyledMapContainer id="map" style={{ height: "400px", width: "100%" }}></StyledMapContainer>
 
-          {associatedMachines.length > 0 && (
-            <div>
-              <h3>Associated Machines:</h3>
-              {associatedMachines.map((machine) => (
-                <div key={machine.id}>
-                  <p>Machine register number : {machine.registerNumber}</p>
-                </div>
-              ))}
-            </div>
-          )}
+            <InfoContainer>
+              <p>Created At: {farmDetails.createdAt}</p>
+              <p>Updated At: {farmDetails.updatedAt}</p>
+              <Button
+            label="Show Associated Fields"
+            color="#64b5f6"
+            onClick={toggleShowFields}
+          ></Button>
 
-          {associatedFields.length > 0 && (
+          <Button
+            label="Show Associated Machines"
+            color="#66bb6a"
+            onClick={toggleShowMachines}
+          ></Button>
+            </InfoContainer>
+          </StyledMapWithInfoContainer>
+
+         
+          {showFields && associatedFields.length > 0 && (
             <div>
               <h3>Associated Fields:</h3>
-              {associatedFields.map((field) => (
-                <FieldCard key={field.id} field={field}></FieldCard>
-              ))}
+              <AssociatedStuff>
+                {associatedFields.map((field) => (
+                  <SmallFieldCardContainer key={field.id}>
+                    <FieldCard key={field.id} field={field}></FieldCard>
+                  </SmallFieldCardContainer>
+                ))}
+              </AssociatedStuff>
             </div>
           )}
-        </>
+
+
+{showMachines && associatedMachines.length > 0 && (
+        <div>
+          <h3>Associated Machines:</h3>
+          {associatedMachines.map((machine) => (
+            <div key={machine.id}>
+              <p>Machine register number : {machine.registerNumber}</p>
+            </div>
+          ))}
+        </div>
+      )}
+        </FarmDetailsContainer>
       ) : (
         <p className="loading">Loading farm details...</p>
       )}
