@@ -19,6 +19,7 @@ const farms= useFarms()
         <>
           <p>Field Name: {fieldDetails.name}</p>
           <p>Location: {flattenCoordinates(fieldDetails.shape.coordinates)}</p>
+          <div id="fieldMap" style={{ height: "400px", width: "100%" }}></div>
           <p>Created At: {fieldDetails.createdAt}</p>
           <p>Updated At: {fieldDetails.updatedAt}</p>
           {associatedFarms && (
