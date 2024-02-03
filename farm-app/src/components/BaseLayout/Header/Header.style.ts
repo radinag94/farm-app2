@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 export const StyledNav = styled.nav`
-  display: flex;
+  /* display: grid; */
   justify-content: space-between;
   align-items: center;
   background-color: #02804beb;
   color: #fff;
   padding: 1rem;
+
 `;
 
 export const RightNavList = styled.ul`
@@ -16,14 +17,16 @@ export const RightNavList = styled.ul`
   padding: 0;
   margin-left: auto;
   align-items: center;
+  position: relative;
 `;
 
 export const LeftNavList = styled.ul`
   list-style: none;
-  display: flex;
+  display: contents;
   margin: 0;
   padding: 0;
   margin-right: auto;
+  /* position: relative; */
 `;
 
 export const StyledNavLink = styled(NavLink)`
