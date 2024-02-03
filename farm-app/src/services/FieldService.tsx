@@ -104,6 +104,27 @@ const FieldService = {
       throw error;
     }
   },
+  fetchFarmByFieldId: async (fieldId: string) => {
+    try {
+      const response = await fetch(`${apiUrl}/byFieldId/${fieldId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch farm by field ID");
+      }
+
+      const farm = await response.json();
+      return farm;
+    } catch (error) {
+      console.error("Error in fetching farm by field ID", error);
+      throw error;
+    }
+  },
 };
 
 export default FieldService;
