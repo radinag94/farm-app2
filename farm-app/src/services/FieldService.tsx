@@ -1,4 +1,4 @@
-import { FieldFormData } from "../components/Forms/FieldForm/FieldForm";
+import { FieldFormData } from "../components/statics/interfaces";
 
 const apiUrl = "http://localhost:3000/field";
 
@@ -80,6 +80,27 @@ const FieldService = {
       return field;
     } catch (error) {
       console.error("Error in deleting field details", error);
+      throw error;
+    }
+  },
+  fetchFieldsByFarmId: async (farmId: string) => {
+    try {
+      const response = await fetch(`${apiUrl}/byFarmId/${farmId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch fields by farm ID");
+      }
+
+      const fields = await response.json();
+      return fields;
+    } catch (error) {
+      console.error("Error in fetching fields by farm ID", error);
       throw error;
     }
   },

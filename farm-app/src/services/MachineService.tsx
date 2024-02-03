@@ -1,4 +1,4 @@
-import { MachineFormData } from "../components/Forms/MachineForm/MachineForm";
+import { MachineFormData } from "../components/statics/interfaces";
 const apiUrl = "http://localhost:3000/machine";
 
 const MachineService = {
@@ -38,6 +38,27 @@ const MachineService = {
     } catch (error) {
       console.error("Error during machine creation:", error);
       throw new Error("Failed to create machine");
+    }
+  },
+  fetchMachinesByFarmId: async (farmId: string) => {
+    try {
+      const response = await fetch(`${apiUrl}/byFarmId/${farmId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch machines by farm ID");
+      }
+
+      const machines = await response.json();
+      return machines;
+    } catch (error) {
+      console.error("Error in fetching machines by farm ID", error);
+      throw error;
     }
   },
 };
