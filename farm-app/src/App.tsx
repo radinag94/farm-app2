@@ -9,9 +9,9 @@ import FieldCultivation from "./pages/FieldCultivation";
 import { BaseLayout } from "./components/BaseLayout/BaseLayout";
 import FarmPage from "./pages/FarmsPage/FarmsPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
-import { useAuth } from "./auth/AuthProvider";
 import FieldDetailsPage from "./pages/FieldDetailsPage/FieldDetailsPage";
 import { AuthProvider } from "./auth/AuthProvider";
+import CropsPage from "./pages/CropsPage/CropsPage";
 
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
                 path={routes.fieldCultivation}
                 element={<FieldCultivation />}
               />
-              <Route path={routes.crop} element={<Machine />} />
+              <Route path={routes.crop} element={<CropsPage />} />
               <Route path={routes.soil} element={<Machine />} />
               <Route path={routes.processType} element={<Machine />} />
 

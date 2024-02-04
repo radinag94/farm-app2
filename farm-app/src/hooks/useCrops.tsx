@@ -1,15 +1,10 @@
 import { useState, useEffect } from "react";
 import CropService from "../services/CropService";
-export interface cropData {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
+import { CropData } from "../components/statics/interfaces";
+
 
 export const useCrops = () => {
-  const [crops, setCrops] = useState<cropData[]>([]);
+  const [crops, setCrops] = useState<CropData[]>([]);
 
   useEffect(() => {
     const fetchCrops = async () => {

@@ -116,3 +116,14 @@ export interface FieldCardProps {
 export interface EmptyListProps {
   message: string;
 }
+export interface CropData {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export interface CreateCropData {
+  name: string;
+}
