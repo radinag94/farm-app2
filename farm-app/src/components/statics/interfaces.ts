@@ -127,3 +127,11 @@ export interface CropData {
 export interface CreateCropData {
   name: string;
 }
+
+export interface SoilData {
+  id: string;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
