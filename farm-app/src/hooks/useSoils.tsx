@@ -11,18 +11,18 @@ export interface SoilData {
 export const useSoils = () => {
   const [soils, setSoils] = useState<SoilData[]>([]);
 
-  useEffect(() => {
-    const fetchSoils = async () => {
-      try {
-        const soilData = await SoilService.fetchSoils();
-        setSoils(soilData);
-      } catch (error) {
-        console.error("Error in fetching soils", error);
-      }
-    };
+  const fetchSoils = async () => {
+    try {
+      const soilData = await SoilService.fetchSoils();
+      setSoils(soilData);
+    } catch (error) {
+      console.error("Error in fetching soils", error);
+    }
+  };
 
+  useEffect(() => {
     fetchSoils();
   }, []);
 
-  return soils;
+  return { soils, fetchSoils }; 
 };

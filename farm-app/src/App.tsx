@@ -12,6 +12,7 @@ import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import FieldDetailsPage from "./pages/FieldDetailsPage/FieldDetailsPage";
 import { AuthProvider } from "./auth/AuthProvider";
 import CropsPage from "./pages/CropsPage/CropsPage";
+import SoilsPage from "./pages/SoilsPage/SoilsPage";
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
                 element={<FieldCultivation />}
               />
               <Route path={routes.crop} element={<CropsPage />} />
-              <Route path={routes.soil} element={<Machine />} />
+              <Route path={routes.soil} element={<SoilsPage />} />
               <Route path={routes.processType} element={<Machine />} />
 
               <Route path={routes.notFound} element={<NotFoundPage />} />
