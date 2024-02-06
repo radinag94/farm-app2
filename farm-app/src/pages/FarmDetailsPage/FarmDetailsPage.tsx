@@ -10,15 +10,29 @@ import { StyledMapWithInfoContainer } from "./FarmDetailsPage.style";
 import { SmallFieldCardContainer } from "../FieldsPage/FieldCard/FieldCard.style";
 import { AssociatedStuff } from "./FarmDetailsPage.style";
 import "leaflet/dist/leaflet.css";
+import { useNavigate } from "react-router";
 
 const FarmDetailsPage: React.FC = () => {
   console.log("FarmDetailsPage rendered");
-
-  const {handleDeleteFarm,farmDetails,showFields,
+  const navigate = useNavigate();
+  const {
+    handleDeleteFarm,
+    farmDetails,
+    showFields,
     showMachines,
-    associatedMachines, toggleShowFields,associatedFields,
-    toggleShowMachines } = useFarmDetailsLogic();
-  
+    associatedMachines,
+    toggleShowFields,
+    associatedFields,
+    toggleShowMachines,
+  } = useFarmDetailsLogic();
+
+  const handleUpdate = () => {
+    if (farmDetails && farmDetails.id) {
+      const updatePath = `/farm/${farmDetails.id}/update-farm`;
+      navigate(updatePath);
+    }
+  };
+
   return (
     <StyledFarmDetailsPage>
       {farmDetails ? (
@@ -30,31 +44,37 @@ const FarmDetailsPage: React.FC = () => {
             color="#ef5353"
             onClick={handleDeleteFarm}
           ></Button>
-
+          <Button
+            label="Update Farm"
+            color="#ffa726"
+            onClick={handleUpdate}
+          ></Button>
           <p>Farm Name: {farmDetails.name}</p>
 
           <p>Location: {JSON.stringify(farmDetails.location)}</p>
           <StyledMapWithInfoContainer>
-              <StyledMapContainer id="map" style={{ height: "400px", width: "100%" }}></StyledMapContainer>
+            <StyledMapContainer
+              id="map"
+              style={{ height: "400px", width: "100%" }}
+            ></StyledMapContainer>
 
             <InfoContainer>
               <p>Created At: {farmDetails.createdAt}</p>
               <p>Updated At: {farmDetails.updatedAt}</p>
               <Button
-            label="Show Associated Fields"
-            color="#64b5f6"
-            onClick={toggleShowFields}
-          ></Button>
+                label="Show Associated Fields"
+                color="#64b5f6"
+                onClick={toggleShowFields}
+              ></Button>
 
-          <Button
-            label="Show Associated Machines"
-            color="#66bb6a"
-            onClick={toggleShowMachines}
-          ></Button>
+              <Button
+                label="Show Associated Machines"
+                color="#66bb6a"
+                onClick={toggleShowMachines}
+              ></Button>
             </InfoContainer>
           </StyledMapWithInfoContainer>
 
-         
           {showFields && associatedFields.length > 0 && (
             <div>
               <h3>Associated Fields:</h3>
@@ -68,17 +88,16 @@ const FarmDetailsPage: React.FC = () => {
             </div>
           )}
 
-
-{showMachines && associatedMachines.length > 0 && (
-        <div>
-          <h3>Associated Machines:</h3>
-          {associatedMachines.map((machine) => (
-            <div key={machine.id}>
-              <p>Machine register number : {machine.registerNumber}</p>
+          {showMachines && associatedMachines.length > 0 && (
+            <div>
+              <h3>Associated Machines:</h3>
+              {associatedMachines.map((machine) => (
+                <div key={machine.id}>
+                  <p>Machine register number : {machine.registerNumber}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          )}
         </FarmDetailsContainer>
       ) : (
         <p className="loading">Loading farm details...</p>

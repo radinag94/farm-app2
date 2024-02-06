@@ -4,7 +4,7 @@ import { MachinePageContainer } from "./MachinesPage.style";
 import { useMachineLogic } from "./MachinesPage.logic";
 
 function Machine() {
-  const { machines, farms, handleFormSubmit } = useMachineLogic();
+  const { machines=[], farms=[], handleFormSubmit } = useMachineLogic();
 
   return (
     <MachinePageContainer>

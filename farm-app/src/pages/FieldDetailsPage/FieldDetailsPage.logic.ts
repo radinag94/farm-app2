@@ -6,30 +6,29 @@ import FieldService from "../../services/FieldService";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { FarmData } from "../../components/statics/interfaces";
+import { useQuery,QueryClient } from "react-query";
+
+const queryClient = new QueryClient();
 
 export const useFieldDetailsLogic = () => {
   const { id } = useParams<{ id: string }>();
-  const [fieldDetails, setFieldDetails] = useState<FieldData | null>(null);
   const navigate = useNavigate();
   const mapRef = useRef<L.Map | null>(null);
-  const [associatedFarm, setAssociatedFarm] = useState<FarmData | null>(null);
 
-  useEffect(() => {
-    const fetchFieldDetails = async () => {
-      try {
-        if (id) {
-          const data = await FieldService.fetchFieldById(id);
-          setFieldDetails(data);
-        }
-      } catch (error) {
-        console.error("Error fetching farm details:", error);
+
+  const fieldDetailsQueryKey = ['fieldDetails', id];
+  const associatedFarmQueryKey = ['associatedFarm' ,id]
+
+  const { data: fieldDetails, error, isLoading } = useQuery<FieldData | null, Error>(
+    fieldDetailsQueryKey,
+    async () => {
+      if (id) {
+        const data = await FieldService.fetchFieldById(id);
+        return data;
       }
-    };
-
-    if (id) {
-      fetchFieldDetails();
+      return null;
     }
-  }, [id]);
+  );
 
   useEffect(() => {
     if (fieldDetails && fieldDetails.shape) {
@@ -64,30 +63,30 @@ export const useFieldDetailsLogic = () => {
     }
   }, [fieldDetails]);
 
-  useEffect(() => {
-    const fetchAssociatedFarm = async () => {
-      try {
-        if (id) {
-          const farm = await FieldService.fetchFarmByFieldId(id);
-          setAssociatedFarm(farm);
-        }
-      } catch (error) {
-        console.error("error in fetching associated farm", error);
+  const { data: associatedFarm } = useQuery<FarmData | null, Error>(
+    associatedFarmQueryKey,
+    async () => {
+      if (id) {
+        const farm = await FieldService.fetchFarmByFieldId(id);
+        return farm;
       }
-    };
-    fetchAssociatedFarm();
-  }, [id]);
+      return null;
+    }
+  );
+
+
 
   const handleDeleteField = async () => {
     try {
       if (id) {
         await FieldService.deleteFieldById(id);
-        navigate("/field");
+        queryClient.invalidateQueries(fieldDetailsQueryKey);
+        navigate('/field');
       }
     } catch (error) {
-      console.error("Error deleting field:", error);
+      console.error('Error deleting field:', error);
     }
   };
 
-  return { fieldDetails, handleDeleteField ,associatedFarm};
+  return { fieldDetails, handleDeleteField, associatedFarm, isLoading, error };
 };

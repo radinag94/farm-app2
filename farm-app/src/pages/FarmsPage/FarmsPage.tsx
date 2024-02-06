@@ -4,8 +4,6 @@ import FarmForm from "../../components/Forms/FarmForm/FarmForm";
 import Button from "../../ui-elements/button";
 import {
   FarmPageContainer,
-  ModalContentWrapper,
-  ModalOverlay,
 } from "./FarmsPage.style";
 import { useFarmsPageLogic } from "./FarmsPage.logic";
 
@@ -23,14 +21,13 @@ export interface FarmData {
 
 function FarmPage() {
   const {
-    farms,
-    showModal,
+    farms=[],
     handleCreateFarm,
-    handleFormSubmit,
-    handleOverlayClick,
-    modalRef,
+    isLoading,
+    isError,
   } = useFarmsPageLogic();
 
+  console.log(farms)
   return (
     <FarmPageContainer>
       <Button
@@ -39,18 +36,14 @@ function FarmPage() {
         onClick={handleCreateFarm}
       ></Button>
       <h2>Your Farms</h2>
-      {farms.length > 0 ? (
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : isError ? (
+        <p>Error loading farms.</p>
+      ) : farms.length > 0 ? (
         farms.map((farm) => <FarmCard key={farm.id} farm={farm} />)
       ) : (
         <EmptyList message="No farms available. Create a farm to get started!" />
-      )}
-
-      {showModal && (
-        <ModalOverlay onClick={handleOverlayClick}>
-          <ModalContentWrapper ref={modalRef}>
-            <FarmForm onSubmit={handleFormSubmit} />
-          </ModalContentWrapper>
-        </ModalOverlay>
       )}
     </FarmPageContainer>
   );
