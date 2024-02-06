@@ -1,82 +1,87 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React from "react";
+import { useFormik } from "formik";
 import Button from "../../../ui-elements/button";
 import Input from "../../../ui-elements/input";
 import FarmService from "../../../services/farmService";
-import { FarmFormProps } from "../../statics/interfaces";
-import { FarmFormData } from "../../statics/interfaces";
+import { FarmFormProps, FarmFormData } from "../../statics/interfaces";
 import { FarmFormContainer } from "./FarmForm.style";
-
+import { farmFormSchema } from "../../statics/form-validations";
 
 const FarmForm: React.FC<FarmFormProps> = ({ onSubmit }) => {
-  const [farmFormData, setFarmFormData] = useState<FarmFormData>({
-    name: "",
-    latitude: 0,
-    longitude: 0,
-    error: "",
-  });
-  // const navigate = useNavigate();
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const numericValue = /^\d*\.?\d+$/.test(value) ? parseFloat(value) : value;
-
-    setFarmFormData({ ...farmFormData, [name]: numericValue, error: "" });
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      if (
-        !farmFormData.name ||
-        !farmFormData.latitude ||
-        !farmFormData.longitude
-      ) {
-        setFarmFormData({
-          ...farmFormData,
-          error: "Please fill in all fields",
-        });
-        return;
+  const formik = useFormik<FarmFormData>({
+    initialValues: {
+      name: "",
+      latitude: 0,
+      longitude: 0,
+      error: "",
+    },
+    validationSchema: farmFormSchema,
+    onSubmit: async (values, { setSubmitting, setFieldError, resetForm }) => {
+      try {
+        const response = await FarmService.createFarm(values);
+        onSubmit(response);
+        resetForm();
+        alert("Farm created successfully!");
+      } catch (error) {
+        console.log("Caught error in form submission:", error);
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred.";
+        setFieldError("error", errorMessage);
+        setSubmitting(false);
       }
-
-      const createdFarm = await FarmService.createFarm(farmFormData);
-      setFarmFormData({ name: "", latitude: 0, longitude: 0, error: "" });
-
-      onSubmit(createdFarm);
-      // navigate('/farm');
-      alert("You created a new farm");
-    } catch (error) {
-      console.error("Error in Farm Form submit", error);
-    }
-  };
+    },
+  });
 
   return (
     <FarmFormContainer>
-      <form onSubmit={handleSubmit}>
-        <label>Farm Name:</label>
+      <form onSubmit={formik.handleSubmit}>
+        <label htmlFor="name">Farm Name:</label>
         <Input
-          onChange={handleChange}
-          value={farmFormData.name}
-          type="text"
           name="name"
+          type="text"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.name}
         />
-        <label>Latitude:</label>
-        <Input
-          onChange={handleChange}
-          value={farmFormData.latitude}
-          type="number"
-          name="latitude"
-        />
-        <label>Longitude:</label>
-        <Input
-          onChange={handleChange}
-          value={farmFormData.longitude}
-          type="number"
-          name="longitude"
-        />
-        {farmFormData.error && (
-          <p className="error-message">{farmFormData.error}</p>
+        {formik.touched.name && formik.errors.name && (
+          <div className="error-message">{formik.errors.name}</div>
         )}
-        <Button label="Create Farm" color="#96db80" />
+        <div>
+          <label htmlFor="latitude">Latitude:</label>
+          <Input
+            name="latitude"
+            type="number"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.latitude.toString()}
+          />
+          {formik.touched.latitude && formik.errors.latitude ? (
+            <div className="error-message">{formik.errors.latitude}</div>
+          ) : null}
+        </div>
+
+        <label htmlFor="longitude">Longitude:</label>
+        <Input
+          name="longitude"
+          type="number"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.longitude.toString()}
+        />
+        {formik.touched.longitude && formik.errors.longitude ? (
+          <div className="error-message">{formik.errors.longitude}</div>
+        ) : null}
+        {formik.errors.error && (
+          <div className="error-message">{formik.errors.error}</div>
+        )}
+        <Button
+          type="submit"
+          label="Create Farm"
+          color="#96db80"
+          disabled={formik.isSubmitting}
+        />
       </form>
     </FarmFormContainer>
   );
