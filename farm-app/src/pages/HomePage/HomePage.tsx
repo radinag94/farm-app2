@@ -5,8 +5,8 @@ import { HomePageContainer } from "./HomePage.style";
 
 function HomePage() {
   // const fields = useFields();
-  const machines = useMachines();
-  const farms = useFarms();
+  // const machines = useMachines();
+  // const farms = useFarms();
 
   return (
     <HomePageContainer>
