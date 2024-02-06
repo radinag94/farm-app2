@@ -10,7 +10,7 @@ import { MachineFormContainer } from "./MachineForm.style";
 
 
 const MachineForm: React.FC<MachineFormProps> = ({ onSubmit }) => {
-  const farms = useFarms();
+  const {farms=[]} = useFarms();
   const [machineFormData, setMachineFormData] = useState<MachineFormData>({
     name: "",
     brand: "",

@@ -1,36 +1,16 @@
-import { useState, useEffect } from "react";
 import FieldService from "../services/FieldService";
-// export interface FieldData {
-//   id: string;
-//   name: string;
-//   shape: {
-//     type: "Polygon" | "Multypolygon";
-//     coordinates: number[][][] | number[][][][];
-//   };
-//   fieldArea: number;
-//   soilId: string;
-//   farmId: string;
-//   createdAt: string;
-//   updatedAt: string;
-//   deletedAt: string | null;
-// }
-
+import { useQuery } from "react-query";
 import { FieldData } from "../components/statics/interfaces";
+
 export const useFields = () => {
-  const [fields, setFields] = useState<FieldData[]>([]);
+  const {
+    data: fields,
+    error,
+    isLoading,
+    isError,
+  } = useQuery<FieldData[], Error>("fields", FieldService.fetchFields, {
+    retry: 1,
+  });
 
-  useEffect(() => {
-    const fetchFields = async () => {
-      try {
-        const fieldData = await FieldService.fetchFields();
-        setFields(fieldData);
-      } catch (error) {
-        console.error("Error in fetching fields", error);
-      }
-    };
-
-    fetchFields();
-  }, []);
-
-  return fields;
+  return { fields, isLoading, isError, error };
 };

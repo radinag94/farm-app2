@@ -1,31 +1,19 @@
 import { useState, useEffect } from "react";
 import MachineService from "../services/MachineService";
-export interface MachineData {
-  id: string;
-  name: string;
-  brand: string;
-  registerNumber: string;
-  farmId: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
+import { useQuery } from "react-query";
+import { MachineData } from "../components/statics/interfaces";
+
+
 
 export const useMachines = () => {
-  const [machines, setMachines] = useState<MachineData[]>([]);
+  const {
+    data: machines,
+    error,
+    isLoading,
+    isError,
+  } = useQuery<MachineData[], Error>("fields", MachineService.fetchMachines, {
+    retry: 1,
+  });
 
-  useEffect(() => {
-    const fetchMachines = async () => {
-      try {
-        const machineData = await MachineService.fetchMachines();
-        setMachines(machineData);
-      } catch (error) {
-        console.error("Error in fetching machines", error);
-      }
-    };
-
-    fetchMachines();
-  }, []);
-
-  return machines;
+  return { machines, isLoading, isError, error };
 };

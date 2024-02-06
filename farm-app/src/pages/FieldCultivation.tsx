@@ -10,13 +10,13 @@ import GrowingPeriodService from "../services/GrowingPeriodService";
 import { useFarms } from "../hooks/useFarms";
 
 function FieldCultivation() {
-  const fields = useFields();
+  const {fields=[]} = useFields();
   const crops = useCrops();
   const growingPeriods = useGrowingPeriods();
   const processTypes = useProcessTypes();
-  const machines = useMachines();
+  const {machines=[]} = useMachines();
   const fieldCultivations = useFieldCultivations();
-  const farms = useFarms();
+  const {farms=[]} = useFarms();
 
   return (
     <>

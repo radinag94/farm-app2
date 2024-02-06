@@ -1,10 +1,10 @@
+import { MachineData } from './../../components/statics/interfaces';
 import { useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FarmData, FieldData } from "../../components/statics/interfaces";
 import FarmService from "../../services/farmService";
 import L from "leaflet";
-import { MachineData } from "../../hooks/useMachines";
 import MachineService from "../../services/MachineService";
 import FieldService from "../../services/FieldService";
 
@@ -76,7 +76,7 @@ export const useFarmDetailsLogic = () => {
     setShowMachines(!showMachines);
     setShowFields(false);
   };
-
+  
  
   useEffect(() => {
     if (farmDetails && farmDetails.location) {

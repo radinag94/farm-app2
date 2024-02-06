@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
 import FarmService from "../services/farmService";
-// import { FarmData } from "../../pages/HomePage";
+import { useQuery } from "react-query";
 export interface FarmData {
   id: string;
   name: string;
@@ -14,20 +13,13 @@ export interface FarmData {
 }
 
 export const useFarms = () => {
-  const [farms, setFarms] = useState<FarmData[]>([]);
-
-  useEffect(() => {
-    const fetchFarms = async () => {
-      try {
-        const farmsData = await FarmService.fetchFarms();
-        setFarms(farmsData);
-      } catch (error) {
-        console.error("Error in fetching farms", error);
-      }
-    };
-
-    fetchFarms();
-  }, []);
-
-  return farms;
+  const {
+    data: farms,
+    error,
+    isLoading,
+    isError,
+  } = useQuery<FarmData[], Error>("farms", FarmService.fetchFarms, {
+    retry: 1,
+  });
+  return { farms, isLoading, isError, error };
 };

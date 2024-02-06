@@ -135,3 +135,14 @@ export interface SoilData {
   updatedAt: string;
   deletedAt: string | null;
 }
+
+export interface MachineData {
+  id: string;
+  name: string;
+  brand: string;
+  registerNumber: string;
+  farmId: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
