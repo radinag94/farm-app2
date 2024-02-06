@@ -12,8 +12,8 @@ import { FieldFormData } from "../../statics/interfaces";
 
 
 const FieldForm: React.FC<FieldFormProps> = ({ onSubmit }) => {
-  const farms = useFarms();
-  const {soils} = useSoils()
+  const {farms=[]} = useFarms();
+  const {soils=[]} = useSoils()
 
   const [name, setName] = useState("");
   const [fieldArea, setFieldArea] = useState<number>(0);

@@ -19,6 +19,22 @@ const SoilService = {
       throw error;
     }
   },
+  fetchSoilById: async (soilId:string) => {
+    try {
+      const response = await fetch(`${apiUrl}/${soilId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      const soil = await response.json();
+      return soil;
+    } catch (error) {
+      console.error("Error in fetching soil", error);
+      throw error;
+    }
+  },
   createSoil: async (soilData:SoilData) => {
     try {
       const response = await fetch(`${apiUrl}/add-soil`, {

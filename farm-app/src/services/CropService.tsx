@@ -20,6 +20,7 @@ const CropService = {
     }
   },
   createCrop: async (cropData: CropData) => {
+    console.log("dsdssdsdsds")
     try {
       const response = await fetch(`${apiUrl}/create`, {
         method: "POST",
@@ -31,8 +32,9 @@ const CropService = {
       });
 
       if (!response.ok) {
+        console.log("dsdssdsdsds")
         const errorData = await response.json();
-        console.log(errorData)
+        console.log(errorData.message)
         if (response.status === 400 && errorData.statusCode === 400) {
           throw new Error(errorData.message || "Failed to create crop");
         }
