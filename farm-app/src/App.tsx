@@ -13,6 +13,8 @@ import FieldDetailsPage from "./pages/FieldDetailsPage/FieldDetailsPage";
 import { AuthProvider } from "./auth/AuthProvider";
 import CropsPage from "./pages/CropsPage/CropsPage";
 import SoilsPage from "./pages/SoilsPage/SoilsPage";
+import CreateFarmPage from "./pages/CreateFarmPage/CreateFarmPage";
+import UpdateFarmPage from "./pages/UpdateFarmPage/UpdateFarmPage";
 
 function App() {
   return (
@@ -25,7 +27,9 @@ function App() {
 
               <Route path={routes.home} element={<HomePage />} />
               <Route path={routes.farm} element={<FarmPage />} />
+              <Route path={routes.createFarm} element={<CreateFarmPage />} />
               <Route path={routes.farmDetails} element={<FarmDetailsPage />} />
+              <Route path={routes.updateFarm} element={<UpdateFarmPage />} />
               <Route path={routes.field} element={<FieldPage />} />
               <Route
                 path={routes.fieldDetails}
