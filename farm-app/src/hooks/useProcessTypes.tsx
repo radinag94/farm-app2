@@ -1,28 +1,21 @@
 import { useState, useEffect } from "react";
 import ProcessTypeService from "../services/ProcessTypeService";
-export interface ProcessTypeData {
-  id: string;
-  type: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
+import { useQuery } from "react-query";
+import { ProcessTypeData } from "../components/statics/interfaces";
 
 export const useProcessTypes = () => {
-  const [processTypes, setProcessTypes] = useState<ProcessTypeData[]>([]);
-
-  useEffect(() => {
-    const fetchProcessTypes = async () => {
-      try {
-        const processTypeData = await ProcessTypeService.fetchProcessTypes();
-        setProcessTypes(processTypeData);
-      } catch (error) {
-        console.error("Error in fetching process types", error);
-      }
-    };
-
-    fetchProcessTypes();
-  }, []);
-
-  return processTypes;
+  const {
+    data: processTypes,
+    error,
+    isLoading,
+    isError,
+    refetch: fetchProcessTypes,
+  } = useQuery<ProcessTypeData[], Error>(
+    "processType",
+    ProcessTypeService.fetchProcessTypes,
+    {
+      retry: 1,
+    }
+  );
+  return { processTypes, fetchProcessTypes, isLoading, isError, error };
 };

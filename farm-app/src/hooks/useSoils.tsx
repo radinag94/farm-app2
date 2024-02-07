@@ -1,28 +1,16 @@
-import { useState, useEffect } from "react";
 import SoilService from "../services/SoilService";
-export interface SoilData {
-  id: string;
-  type: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
+import { useQuery } from "react-query";
+import { SoilData } from "../components/statics/interfaces";
 
 export const useSoils = () => {
-  const [soils, setSoils] = useState<SoilData[]>([]);
-
-  const fetchSoils = async () => {
-    try {
-      const soilData = await SoilService.fetchSoils();
-      setSoils(soilData);
-    } catch (error) {
-      console.error("Error in fetching soils", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchSoils();
-  }, []);
-
-  return { soils, fetchSoils }; 
+  const {
+    data: soils,
+    error,
+    isLoading,
+    isError,
+    refetch: fetchSoils,
+  } = useQuery<SoilData[], Error>("soils", SoilService.fetchSoils, {
+    retry: 1,
+  });
+  return { soils, fetchSoils, isLoading, isError, error };
 };
