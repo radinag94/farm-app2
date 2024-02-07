@@ -15,6 +15,12 @@ import CropsPage from "./pages/CropsPage/CropsPage";
 import SoilsPage from "./pages/SoilsPage/SoilsPage";
 import CreateFarmPage from "./pages/CreateFarmPage/CreateFarmPage";
 import UpdateFarmPage from "./pages/UpdateFarmPage/UpdateFarmPage";
+import CreateFieldPage from "./pages/CreateFieldPage/CreateFieldPage";
+import UpdateFieldPage from "./pages/UpdateFieldPage/UpdateFieldPage";
+import MachineDetailsPage from "./pages/MachineDetailsPage/MachineDetailsPage";
+import CreateMachinePage from "./pages/CreateMachinePage/CreateMachinePage";
+import UpdateMachinePage from "./pages/UpdateMachinePage/UpdateMachinePage";
+import ProcessTypesPage from "./pages/ProcessTypesPage/ProcessTypesPage";
 
 function App() {
   return (
@@ -31,18 +37,26 @@ function App() {
               <Route path={routes.farmDetails} element={<FarmDetailsPage />} />
               <Route path={routes.updateFarm} element={<UpdateFarmPage />} />
               <Route path={routes.field} element={<FieldPage />} />
+              <Route path={routes.createField} element={<CreateFieldPage />} />
               <Route
                 path={routes.fieldDetails}
                 element={<FieldDetailsPage />}
               />
+               <Route
+                path={routes.updateField}
+                element={<UpdateFieldPage/>}
+              />
               <Route path={routes.machine} element={<Machine />} />
+              <Route path={routes.createMachine} element={<CreateMachinePage />} />
+              <Route path={routes.machineDetails} element={<MachineDetailsPage />} />
+              <Route path={routes.updateMachine} element={<UpdateMachinePage/>} />
               <Route
                 path={routes.fieldCultivation}
                 element={<FieldCultivation />}
               />
               <Route path={routes.crop} element={<CropsPage />} />
               <Route path={routes.soil} element={<SoilsPage />} />
-              <Route path={routes.processType} element={<Machine />} />
+              <Route path={routes.processType} element={< ProcessTypesPage/>} />
 
               <Route path={routes.notFound} element={<NotFoundPage />} />
             </Routes>
