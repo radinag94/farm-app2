@@ -6,20 +6,19 @@ import { useFields } from "../../hooks/useFields";
 import EmptyList from "../../components/EmptyList/EmptyListMessage";
 import FieldCard from "./FieldCard/FieldCard";
 import Button from "../../ui-elements/button";
+import { useNavigate } from "react-router";
+import { useFieldPageLogic } from "./FieldsPage.logic";
 
 function FieldPage() {
-  const {fields,isLoading,isError} = useFields();
-  const handleFormSubmit = (fieldData: FieldFormData) => {
-    console.log("field submitted", fieldData.error);
-  };
+  const { fields, handleCreateField, isLoading, isError } = useFieldPageLogic();
   return (
     <>
       <FieldPageContainer>
-      <Button
-        label="Create Field"
-        color="#afb2ad"
-        // onClick={handleCreateFarm}
-      ></Button>
+        <Button
+          label="Create Field"
+          color="#afb2ad"
+          onClick={handleCreateField}
+        ></Button>
         <h2>Field List</h2>
         {isLoading ? (
           <p>Loading...</p>
@@ -32,13 +31,8 @@ function FieldPage() {
         ) : (
           <EmptyList message="No fields available. Create a field to get started!" />
         )}
-
-        <FieldForm onSubmit={handleFormSubmit}></FieldForm>
       </FieldPageContainer>
-      
     </>
-
-
   );
 }
 
