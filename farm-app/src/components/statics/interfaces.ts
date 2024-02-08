@@ -209,3 +209,24 @@ export interface GrowingPeriodData {
   updatedAt: string;
   deletedAt: string | null;
 }
+export interface UpdateMachineFormValues {
+  name: string;
+  brand: string;
+  registerNumber: string;
+  farmId: string;
+  error: "";
+}
+export interface UpdateMachineFormProps {
+  id: string;
+}
+
+export interface UpdateFormValues {
+  name: string;
+  latitude: string;
+  longitude: string;
+  error: "";
+}
+
+export interface UpdateFarmFormProps {
+  id: string;
+}

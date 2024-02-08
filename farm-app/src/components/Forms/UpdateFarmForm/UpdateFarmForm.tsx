@@ -8,21 +8,13 @@ import Button from "../../../ui-elements/button";
 import FarmService from "../../../services/farmService";
 import { FarmFormData } from "../../statics/interfaces";
 import { UpdateFarmFormContainer } from "./UpdateFarmForm.style";
+import { updateFarmFormSchema } from "../../statics/form-validations";
+import { UpdateFarmFormProps,UpdateFormValues } from "../../statics/interfaces";
 
-interface FormValues {
-  name: string;
-  latitude: string;
-  longitude: string;
-  error: "";
-}
-
-interface UpdateFarmFormProps {
-  id: string;
-}
 
 const UpdateFarmForm: React.FC<UpdateFarmFormProps> = ({ id }) => {
   const navigate = useNavigate();
-  const [initialValues, setInitialValues] = useState<FormValues>({
+  const [initialValues, setInitialValues] = useState<UpdateFormValues>({
     name: "",
     latitude: "",
     longitude: "",
@@ -58,35 +50,7 @@ const UpdateFarmForm: React.FC<UpdateFarmFormProps> = ({ id }) => {
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .min(2, "The farm name you provided is too short")
-        .max(20, "The farm name you provided is too long"),
-      latitude: Yup.string()
-        .matches(/^-?\d+(\.\d+)?$/, "Invalid latitude value")
-        .test("is-valid-latitude", "Invalid latitude value", (value) => {
-          // Explicitly return true or false
-          return !value ||
-            (value &&
-              !isNaN(parseFloat(value)) &&
-              parseFloat(value) >= -90 &&
-              parseFloat(value) <= 90)
-            ? true
-            : false;
-        }),
-      longitude: Yup.string()
-        .matches(/^-?\d+(\.\d+)?$/, "Invalid longitude value")
-        .test("is-valid-longitude", "Invalid longitude value", (value) => {
-          // Explicitly return true or false
-          return !value ||
-            (value &&
-              !isNaN(parseFloat(value)) &&
-              parseFloat(value) >= -180 &&
-              parseFloat(value) <= 180)
-            ? true
-            : false;
-        }),
-    }),
+    validationSchema: updateFarmFormSchema,
     onSubmit: async (values, { setSubmitting, setFieldError, resetForm }) => {
       try {
         // latitude and longitude are converted to numbers
@@ -149,20 +113,20 @@ const UpdateFarmForm: React.FC<UpdateFarmFormProps> = ({ id }) => {
             <div>{formik.errors.latitude}</div>
           ) : null}
         </div>
-          <label htmlFor="longitude">Longitude</label>
-          <Input
-            name="longitude"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.longitude}
-          />
-          {formik.touched.longitude && formik.errors.longitude ? (
-            <div>{formik.errors.longitude}</div>
-          ) : null}
-          {formik.errors.error && (
-            <div className="error-message">{formik.errors.error}</div>
-          )}
+        <label htmlFor="longitude">Longitude</label>
+        <Input
+          name="longitude"
+          type="text"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.longitude}
+        />
+        {formik.touched.longitude && formik.errors.longitude ? (
+          <div>{formik.errors.longitude}</div>
+        ) : null}
+        {formik.errors.error && (
+          <div className="error-message">{formik.errors.error}</div>
+        )}
         <Button
           type="submit"
           label="Update farm"
