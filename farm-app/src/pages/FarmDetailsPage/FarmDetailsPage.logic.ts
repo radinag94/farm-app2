@@ -1,4 +1,4 @@
-import { MachineData } from './../../components/statics/interfaces';
+import { MachineData } from "./../../components/statics/interfaces";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,66 +7,61 @@ import FarmService from "../../services/farmService";
 import L from "leaflet";
 import MachineService from "../../services/MachineService";
 import FieldService from "../../services/FieldService";
+import { useQuery } from "react-query";
 
 export const useFarmDetailsLogic = () => {
   const { id } = useParams<{ id: string }>();
-  const [farmDetails, setFarmDetails] = useState<FarmData | null>(null);
-  const [showFields, setShowFields] = useState(false);
-  const [showMachines, setShowMachines] = useState(false);
-  const [associatedMachines, setAssociatedMachines] = useState<MachineData[]>([]);
-  const [associatedFields, setAssociatedFields] = useState<FieldData[]>([]);
+
   const mapRef = useRef<L.Map | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchFarmDetails = async () => {
-      try {
-        if (id) {
-          const data = await FarmService.fetchFarmById(id);
-          setFarmDetails(data);
-        }
-      } catch (error) {
-        console.error("Error fetching farm details:", error);
-      }
-    };
-
-    if (id) {
-      fetchFarmDetails();
+  const {
+    data: farmDetails,
+    isError: isFarmDetailsError,
+    error: farmDetailsError,
+  } = useQuery(
+    ["farmDetails", id],
+    () => {
+      if (!id) throw new Error("Farm ID is undefined");
+      return FarmService.fetchFarmById(id);
+    },
+    {
+      enabled: !!id,
     }
-  }, [id]);
+  );
+  const [showFields, setShowFields] = useState(false);
+  const [showMachines, setShowMachines] = useState(false);
 
+  const {
+    data: associatedMachines,
+    isError: isMachinesError,
+    error: machinesError,
+  } = useQuery<MachineData[], Error>(
+    ["associatedMachines", id],
+    () => {
+      if (!id) throw new Error("id is undefined");
+      return MachineService.fetchMachinesByFarmId(id);
+    },
+    {
+      enabled: !!id && showMachines,
+      retry: 1,
+    }
+  );
 
-  useEffect(() => {
-    const fetchAssociatedMachines = async () => {
-      try {
-        if (id && showMachines) {
-          const machines = await MachineService.fetchMachinesByFarmId(id);
-          setAssociatedMachines(machines);
-        }
-      } catch (error) {
-        console.error("Error fetching associated machines:", error);
-      }
-    };
-
-    fetchAssociatedMachines();
-  }, [id, showMachines]);
-
-  useEffect(() => {
-    const fetchAssociatedFields = async () => {
-      try {
-        if (id && showFields) {
-          const fields = await FieldService.fetchFieldsByFarmId(id);
-          setAssociatedFields(fields);
-        }
-      } catch (error) {
-        console.error("Error fetching associated fields:", error);
-      }
-    };
-
-    fetchAssociatedFields();
-  }, [id, showFields]);
-
-
+  const {
+    data: associatedFields,
+    isError: isFieldsError,
+    error: fieldsError,
+  } = useQuery<FieldData[], Error>(
+    ["associatedFields", id],
+    () => {
+      if (!id) throw new Error("id is undefined");
+      return FieldService.fetchFieldsByFarmId(id);
+    },
+    {
+      enabled: !!id && showFields,
+    }
+  );
   const toggleShowFields = () => {
     setShowFields(!showFields);
     setShowMachines(false);
@@ -76,8 +71,7 @@ export const useFarmDetailsLogic = () => {
     setShowMachines(!showMachines);
     setShowFields(false);
   };
-  
- 
+
   useEffect(() => {
     if (farmDetails && farmDetails.location) {
       const [longitude, latitude] = farmDetails.location.coordinates;
@@ -93,7 +87,6 @@ export const useFarmDetailsLogic = () => {
     }
   }, [farmDetails]);
 
-
   const handleDeleteFarm = async () => {
     try {
       if (id) {
@@ -104,9 +97,23 @@ export const useFarmDetailsLogic = () => {
       console.error("Error deleting farm:", error);
     }
   };
+  const handleUpdate = () => {
+    if (farmDetails && farmDetails.id) {
+      const updatePath = `/farm/${farmDetails.id}/update-farm`;
+      navigate(updatePath);
+    }
+  };
 
-  return { farmDetails, handleDeleteFarm,showFields,
+  return {
+    farmDetails,
+    handleDeleteFarm,
+    showFields,
     showMachines,
-    associatedMachines, toggleShowFields,associatedFields,
-    toggleShowMachines };
+    associatedMachines,
+    toggleShowFields,
+    associatedFields,
+    toggleShowMachines,handleUpdate,
+    isError: isFarmDetailsError || isMachinesError || isFieldsError,
+    error: farmDetailsError || machinesError || fieldsError,
+  };
 };

@@ -64,9 +64,9 @@ export const InfoContainer = styled.div`
   width: 70%;
   margin-left: 20px;
   background-color: #9edca1;
-`
+`;
 
-export  const StyledMapWithInfoContainer = styled.div`
+export const StyledMapWithInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
 
@@ -79,11 +79,10 @@ export  const StyledMapWithInfoContainer = styled.div`
 `;
 
 export const AssociatedStuff = styled.div`
-display: flex;
-align-items: center;
-    margin: 20px;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-
-`
+  display: flex;
+  align-items: center;
+  margin: 20px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+`;

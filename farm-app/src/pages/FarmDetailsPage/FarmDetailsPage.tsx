@@ -10,28 +10,19 @@ import { StyledMapWithInfoContainer } from "./FarmDetailsPage.style";
 import { SmallFieldCardContainer } from "../FieldsPage/FieldCard/FieldCard.style";
 import { AssociatedStuff } from "./FarmDetailsPage.style";
 import "leaflet/dist/leaflet.css";
-import { useNavigate } from "react-router";
 
 const FarmDetailsPage: React.FC = () => {
-  console.log("FarmDetailsPage rendered");
-  const navigate = useNavigate();
   const {
     handleDeleteFarm,
     farmDetails,
     showFields,
     showMachines,
-    associatedMachines,
+    associatedMachines = [],
     toggleShowFields,
-    associatedFields,
+    associatedFields = [],
     toggleShowMachines,
+    handleUpdate,
   } = useFarmDetailsLogic();
-
-  const handleUpdate = () => {
-    if (farmDetails && farmDetails.id) {
-      const updatePath = `/farm/${farmDetails.id}/update-farm`;
-      navigate(updatePath);
-    }
-  };
 
   return (
     <StyledFarmDetailsPage>
@@ -75,7 +66,7 @@ const FarmDetailsPage: React.FC = () => {
             </InfoContainer>
           </StyledMapWithInfoContainer>
 
-          {showFields && associatedFields.length > 0 && (
+          {showFields && associatedFields?.length > 0 && (
             <div>
               <h3>Associated Fields:</h3>
               <AssociatedStuff>
@@ -88,7 +79,7 @@ const FarmDetailsPage: React.FC = () => {
             </div>
           )}
 
-          {showMachines && associatedMachines.length > 0 && (
+          {showMachines && associatedMachines?.length > 0 && (
             <div>
               <h3>Associated Machines:</h3>
               {associatedMachines.map((machine) => (
