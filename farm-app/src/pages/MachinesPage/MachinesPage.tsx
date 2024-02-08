@@ -1,37 +1,35 @@
 import EmptyList from "../../components/EmptyList/EmptyListMessage";
-import MachineForm from "../../components/Forms/MachineForm/MachineForm";
 import { MachinePageContainer } from "./MachinesPage.style";
+import Button from "../../ui-elements/button";
+import MachineCard from "./MachineCard/MachineCard";
 import { useMachineLogic } from "./MachinesPage.logic";
 
 function Machine() {
-  const { machines=[], farms=[], handleFormSubmit } = useMachineLogic();
-
+  const {
+    machines = [],
+    handleCreateMachine,
+    isLoading,
+    isError,
+  } = useMachineLogic();
   return (
     <MachinePageContainer>
+      <Button
+        label="Create Machine"
+        color="#afb2ad"
+        onClick={handleCreateMachine}
+      ></Button>
       <h2>Machine List</h2>
-      {machines.length > 0 ? (
-        machines.map((machine) => {
-          const associatedFarm = farms.find(
-            (farm) => farm.id === machine.farmId
-          );
-
-          return (
-            <div key={machine.id}>
-              <strong>Name: {machine.name}</strong>
-              <p>Brand: {machine.brand}</p>
-              <p>Register Number: {machine.registerNumber}</p>
-              {associatedFarm && (
-                <div>
-                  <p>Farm Name: {associatedFarm.name}</p>
-                </div>
-              )}
-            </div>
-          );
-        })
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : isError ? (
+        <p>Error loading fields.</p>
+      ) : machines && machines.length > 0 ? (
+        machines.map((machine) => (
+          <MachineCard key={machine.id} machine={machine}></MachineCard>
+        ))
       ) : (
         <EmptyList message="No machines available. Create a machine to get started!" />
       )}
-      <MachineForm onSubmit={handleFormSubmit}></MachineForm>
     </MachinePageContainer>
   );
 }

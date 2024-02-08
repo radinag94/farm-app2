@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export const useFarmsPageLogic = () => {
-  const { farms, isLoading, isError } = useFarms();
+  const { farms=[], isLoading, isError } = useFarms();
   const navigate = useNavigate();
 
   const handleCreateFarm = () => {

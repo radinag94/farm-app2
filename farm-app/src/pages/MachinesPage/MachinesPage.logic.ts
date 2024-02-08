@@ -1,15 +1,13 @@
 import { useMachines } from "../../hooks/useMachines";
-import { useFarms } from "../../hooks/useFarms";
-import { MachineFormData } from "../../components/statics/interfaces";
+import { useNavigate } from "react-router";
 
 
 export const useMachineLogic = () => {
-  const {machines }= useMachines();
-  const {farms} = useFarms();
-
-  const handleFormSubmit = (machineData: MachineFormData) => {
-    console.log("field submitted", machineData.error);
+  const { machines = [], isLoading, isError } = useMachines();
+  const navigate = useNavigate();
+  const handleCreateMachine = () => {
+    navigate(`/machine/create-machine`);
   };
 
-  return { machines, farms, handleFormSubmit };
+  return { machines ,handleCreateMachine,isLoading,isError };
 };

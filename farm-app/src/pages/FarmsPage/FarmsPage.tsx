@@ -7,17 +7,6 @@ import {
 } from "./FarmsPage.style";
 import { useFarmsPageLogic } from "./FarmsPage.logic";
 
-export interface FarmData {
-  id: string;
-  name: string;
-  location: {
-    type: string;
-    coordinates: [number, number];
-  };
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
 
 function FarmPage() {
   const {
