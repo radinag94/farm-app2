@@ -11,7 +11,7 @@ export const useMachines = () => {
     error,
     isLoading,
     isError,
-  } = useQuery<MachineData[], Error>("fields", MachineService.fetchMachines, {
+  } = useQuery<MachineData[], Error>("machines", MachineService.fetchMachines, {
     retry: 1,
   });
 
