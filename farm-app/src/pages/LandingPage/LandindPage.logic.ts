@@ -16,6 +16,7 @@ const useLandingPageLogic = (): LandingPageLogic => {
     // loginUser,
     //  registerUser, 
      setIsAuthenticated } = useAuth();
+     
 
   const handleSignUpSubmit = (formData: SignUpFormData) => {
     if (formData.password !== formData.confirmPass) {
