@@ -1,92 +1,97 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import Button from "../../../ui-elements/button";
-import Input from "../../../ui-elements/input";
-import MachineService from "../../../services/MachineService";
 import { useFarms } from "../../../hooks/useFarms";
-import { MachineFormProps } from "../../statics/interfaces";
-import { MachineFormData } from "../../statics/interfaces";
+import MachineService from "../../../services/MachineService";
 import { MachineFormContainer } from "./MachineForm.style";
+import { machineValidationSchema } from "../../statics/form-validations";
 
+const MachineForm = ({ onSubmit }) => {
+  const { farms = [] } = useFarms();
 
-
-const MachineForm: React.FC<MachineFormProps> = ({ onSubmit }) => {
-  const {farms=[]} = useFarms();
-  const [machineFormData, setMachineFormData] = useState<MachineFormData>({
-    name: "",
-    brand: "",
-    registerNumber: "",
-    farmId: "",
-    error: "",
-  });
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const numericValue = /^\d*\.?\d+$/.test(value) ? parseFloat(value) : value;
-
-    setMachineFormData({ ...machineFormData, [name]: numericValue, error: "" });
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      if (
-        !machineFormData.name ||
-        !machineFormData.brand ||
-        !machineFormData.registerNumber ||
-        !machineFormData.farmId
-      ) {
-        setMachineFormData({
-          ...machineFormData,
-          error: "Please fill in all fields",
-        });
-        return;
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      brand: "",
+      registerNumber: "",
+      farmId: "",
+      error: "",
+    },
+    validationSchema: machineValidationSchema,
+    onSubmit: async (values, { setSubmitting, setFieldError, resetForm }) => {
+      try {
+        const createdMachine = await MachineService.createMachine(values);
+        console.log(createdMachine.message)
+       
+        if (createdMachine.message) {
+          throw new Error(createdMachine.message);
+        }
+        alert("You created a new machine");
+        onSubmit(createdMachine);
+        resetForm();
+      } catch (error) {
+        console.error("Error in machine form submit", error);
+        const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred.";
+      setFieldError("error", errorMessage);
+      setSubmitting(false);
       }
-
-      const createdFarm = await MachineService.createFarm(machineFormData);
-      setMachineFormData({
-        name: "",
-        brand: "",
-        registerNumber: "",
-        farmId: "",
-        error: "",
-      });
-      onSubmit(createdFarm);
-
-      alert("You created a new machine");
-    } catch (error) {
-      console.error("Error in machine form  submit", error);
-    }
-  };
+     setSubmitting(false)
+    },
+  });
 
   return (
     <MachineFormContainer>
-      <form onSubmit={handleSubmit}>
-        <label>Machine name:</label>
-        <Input
-          onChange={handleChange}
-          value={machineFormData.name}
-          type="text"
+      <form onSubmit={formik.handleSubmit}>
+        <label htmlFor="name">Machine name:</label>
+        <input
+          id="name"
           name="name"
-        />
-        <label>Brand:</label>
-        <Input
-          onChange={handleChange}
-          value={machineFormData.brand}
           type="text"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.name}
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="error-message">{formik.errors.name}</div>
+        ) : null}
+
+        <label htmlFor="brand">Brand:</label>
+        <input
+          id="brand"
           name="brand"
-        />
-        <label>Register number:</label>
-        <Input
-          onChange={handleChange}
-          value={machineFormData.registerNumber}
           type="text"
-          name="registerNumber"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.brand}
         />
-        <label>Farm:</label>
+        {formik.touched.brand && formik.errors.brand ? (
+          <div className="error-message">{formik.errors.brand}</div>
+        ) : null}
+
+        <label htmlFor="registerNumber">Register number:</label>
+        <input
+          id="registerNumber"
+          name="registerNumber"
+          type="text"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.registerNumber}
+        />
+        {formik.touched.registerNumber && formik.errors.registerNumber ? (
+          <div className="error-message">{formik.errors.registerNumber}</div>
+        ) : null}
+
+        <label htmlFor="farmId">Farm:</label>
         <select
-          onChange={handleChange}
-          value={machineFormData.farmId}
+          id="farmId"
           name="farmId"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.farmId}
         >
           <option value="" disabled>
             Select a Farm
@@ -97,15 +102,17 @@ const MachineForm: React.FC<MachineFormProps> = ({ onSubmit }) => {
             </option>
           ))}
         </select>
-        {machineFormData.error && (
-          <p className="error-message">{machineFormData.error}</p>
+        {formik.touched.farmId && formik.errors.farmId ? (
+          <div className="error-message">{formik.errors.farmId}</div>
+        ) : null}
+{formik.errors.error && (
+          <div className="error-message">{formik.errors.error}</div>
         )}
         <Button
+          type="submit"
           label="Create Machine"
           color="#96db80"
-          //   onClick={function (): void {
-          //     throw new Error("Function not implemented.");
-          //   }}
+          disabled={formik.isSubmitting}
         />
       </form>
     </MachineFormContainer>
