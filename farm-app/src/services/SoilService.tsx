@@ -19,7 +19,7 @@ const SoilService = {
       throw error;
     }
   },
-  fetchSoilById: async (soilId:string) => {
+  fetchSoilById: async (soilId: string) => {
     try {
       const response = await fetch(`${apiUrl}/${soilId}`, {
         method: "GET",
@@ -35,7 +35,7 @@ const SoilService = {
       throw error;
     }
   },
-  createSoil: async (soilData:SoilData) => {
+  createSoil: async (soilData: SoilData) => {
     try {
       const response = await fetch(`${apiUrl}/add-soil`, {
         method: "POST",
@@ -61,7 +61,7 @@ const SoilService = {
     try {
       const response = await fetch(`${apiUrl}/${soilId}/soft`, {
         method: "DELETE",
-        headers: {  
+        headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
