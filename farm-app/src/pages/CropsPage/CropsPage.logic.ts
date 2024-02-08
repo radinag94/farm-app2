@@ -1,22 +1,10 @@
 import { useState,useEffect } from "react";
 import { CropData } from "../../components/statics/interfaces";
 import CropService from "../../services/CropService";
+import { useCrops } from "../../hooks/useCrops";
 export const useCropsLogic = () => {
-const [crops, setCrops] = useState<CropData[]>([]);
+const {crops, fetchCrops, isLoading, isError, error} = useCrops()
   const [newCropName, setNewCropName] = useState("");
-
-  useEffect(() => {
-    fetchCrops();
-  }, []);
-
-  const fetchCrops = async () => {
-    try {
-      const cropsData = await CropService.fetchCrops();
-      setCrops(cropsData);
-    } catch (error) {
-      console.error("Error fetching crops", error);
-    }
-  };
 
   const createCrop = async () => {
     try {
@@ -44,5 +32,5 @@ const [crops, setCrops] = useState<CropData[]>([]);
     }
   };
 
-  return {crops,createCrop,handleDeleteCrop,newCropName,setNewCropName}
+  return {crops,createCrop,handleDeleteCrop,newCropName,setNewCropName,isLoading,isError,error}
 }
