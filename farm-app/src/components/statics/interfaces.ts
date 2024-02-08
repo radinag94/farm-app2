@@ -7,7 +7,7 @@ export interface FieldData {
   };
   fieldArea: number;
   soilId: string;
-  farmId:string;
+  farmId: string;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
@@ -24,7 +24,7 @@ export interface FarmData {
   updatedAt: string;
   deletedAt: string | null;
 }
-
+export interface LoginPageProps {}
 export interface LandingPageProps {}
 
 export interface FarmFormProps {
@@ -36,6 +36,13 @@ export interface FarmFormData {
   latitude: number;
   longitude: number;
   error: string;
+}
+
+export interface CreateFieldCultivationFormData {
+  pDate: string;
+  machineId: string;
+  growingPeriodId: string;
+  processTypeId: string;
 }
 
 export interface FieldFormProps {
@@ -51,6 +58,7 @@ export interface FieldFormData {
   fieldArea: number;
   soilId: string;
   farmId: string;
+  error?: string;
 }
 export interface LoginFormData {
   email: string;
@@ -95,10 +103,22 @@ export interface FarmCardProps {
     deletedAt: string | null;
   };
 }
+export interface MachineCardProps {
+  machine: {
+    id: string;
+    name: string;
+    brand: string;
+    farmId: string;
+    registerNumber: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+  };
+}
 
 export interface FieldCardProps {
   field: {
-    id:string;
+    id: string;
     name: string;
     shape: {
       type: "Polygon" | "Multypolygon";
@@ -107,6 +127,16 @@ export interface FieldCardProps {
     fieldArea: number;
     soilId: string;
     farmId: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+  };
+}
+export interface GrowingPeriodCardProps {
+  growingPeriod: {
+    id: string;
+    cropId: string;
+    fieldId: string;
     createdAt: string;
     updatedAt: string;
     deletedAt: string | null;
@@ -142,6 +172,39 @@ export interface MachineData {
   brand: string;
   registerNumber: string;
   farmId: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  error?: string;
+}
+export interface SoilData {
+  id: string;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export interface ProcessTypeData {
+  id: string;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+export interface UpdateFieldFormValues {
+  name: string;
+  fieldArea: number;
+  soilId: string;
+  farmId: string;
+  coordinates: string;
+  error: "";
+}
+
+export interface GrowingPeriodData {
+  id: string;
+  cropId: string;
+  fieldId: string;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
