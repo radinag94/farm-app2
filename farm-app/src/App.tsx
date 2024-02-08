@@ -5,7 +5,7 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import { routes } from "./components/statics/routes";
 import FarmDetailsPage from "./pages/FarmDetailsPage/FarmDetailsPage";
 import Machine from "./pages/MachinesPage/MachinesPage";
-import FieldCultivation from "./pages/FieldCultivation";
+import FieldCultivation from "./pages/FieldCultivationsPage/FieldCultivationsPage";
 import { BaseLayout } from "./components/BaseLayout/BaseLayout";
 import FarmPage from "./pages/FarmsPage/FarmsPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
@@ -21,6 +21,9 @@ import MachineDetailsPage from "./pages/MachineDetailsPage/MachineDetailsPage";
 import CreateMachinePage from "./pages/CreateMachinePage/CreateMachinePage";
 import UpdateMachinePage from "./pages/UpdateMachinePage/UpdateMachinePage";
 import ProcessTypesPage from "./pages/ProcessTypesPage/ProcessTypesPage";
+import CreateFieldCultivationPage from "./pages/CreateFieldCultivationPage/CreateFieldCultivationPage";
+import GrowingPeriodDetailsPage from "./pages/GrowingPeriodDetailsPage/GrowingPeriodDetailsPage";
+import CreateGrowingPeriodPage from "./pages/CreateGrowingPeriodPage/CreateGrowingPeriodPage";
 
 function App() {
   return (
@@ -42,21 +45,39 @@ function App() {
                 path={routes.fieldDetails}
                 element={<FieldDetailsPage />}
               />
-               <Route
-                path={routes.updateField}
-                element={<UpdateFieldPage/>}
+              <Route path={routes.updateField} element={<UpdateFieldPage />} />
+              <Route
+                path={routes.growingPeriodDetails}
+                element={<GrowingPeriodDetailsPage />}
+              />
+              <Route
+                path={routes.createGrowingPeriod}
+                element={<CreateGrowingPeriodPage />}
+              />
+              <Route
+                path={routes.createFieldCultivation}
+                element={<CreateFieldCultivationPage />}
               />
               <Route path={routes.machine} element={<Machine />} />
-              <Route path={routes.createMachine} element={<CreateMachinePage />} />
-              <Route path={routes.machineDetails} element={<MachineDetailsPage />} />
-              <Route path={routes.updateMachine} element={<UpdateMachinePage/>} />
+              <Route
+                path={routes.createMachine}
+                element={<CreateMachinePage />}
+              />
+              <Route
+                path={routes.machineDetails}
+                element={<MachineDetailsPage />}
+              />
+              <Route
+                path={routes.updateMachine}
+                element={<UpdateMachinePage />}
+              />
               <Route
                 path={routes.fieldCultivation}
                 element={<FieldCultivation />}
               />
               <Route path={routes.crop} element={<CropsPage />} />
               <Route path={routes.soil} element={<SoilsPage />} />
-              <Route path={routes.processType} element={< ProcessTypesPage/>} />
+              <Route path={routes.processType} element={<ProcessTypesPage />} />
 
               <Route path={routes.notFound} element={<NotFoundPage />} />
             </Routes>

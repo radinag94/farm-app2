@@ -8,6 +8,8 @@ export const routes = {
     field: "/field",
     createField: "/field/create-field",
     fieldDetails: "/field/:id",
+    growingPeriodDetails: "/field/:id/growing-period/:id",
+    createGrowingPeriod: "/field/:id/create-growing-period",
     updateField: "/field/:id/update-field",
     machine: "/machine",
     createMachine: "/machine/create-machine",
@@ -17,6 +19,7 @@ export const routes = {
     soil: "/soil",
     processType: "/process-type",
     fieldCultivation:"/field-cultivation",
+    createFieldCultivation: "/field/:id/create-field-cultivation",
     notFound: "*",
   };
   
