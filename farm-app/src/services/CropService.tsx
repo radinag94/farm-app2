@@ -20,7 +20,6 @@ const CropService = {
     }
   },
   createCrop: async (cropData: CropData) => {
-    console.log("dsdssdsdsds")
     try {
       const response = await fetch(`${apiUrl}/create`, {
         method: "POST",
@@ -32,9 +31,8 @@ const CropService = {
       });
 
       if (!response.ok) {
-        console.log("dsdssdsdsds")
         const errorData = await response.json();
-        console.log(errorData.message)
+        console.log(errorData.message);
         if (response.status === 400 && errorData.statusCode === 400) {
           throw new Error(errorData.message || "Failed to create crop");
         }
@@ -46,6 +44,29 @@ const CropService = {
     } catch (error) {
       console.error("Error during crop creation:", error);
       throw new Error("Failed to create crop");
+    }
+  },
+  fetchCropsByFieldId: async (fieldId:string) => {
+    try {
+      const response = await fetch(`${apiUrl}/byField/${fieldId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log("Backend error message:", errorData.message);
+        throw new Error(errorData.message);
+      }
+
+      const crops = await response.json();
+      return crops;
+    } catch (error) {
+      console.error("Error in fetching crops by field ID:", error);
+      throw error
     }
   },
   deleteCropById: async (cropId: string) => {

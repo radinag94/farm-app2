@@ -1,5 +1,4 @@
 import { FarmFormData } from "../components/statics/interfaces";
-import { FarmData } from "../components/statics/interfaces";
 
 const apiUrl = "http://localhost:3000/farm";
 

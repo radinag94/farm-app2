@@ -31,14 +31,16 @@ const FieldService = {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create field");
+        const errorData = await response.json();
+        console.log("Backend error message:", errorData.message);
+        throw new Error(errorData.message);
       }
 
       const data = await response.json();
       return data;
     } catch (error) {
       console.error("Error during field creation:", error);
-      throw new Error("Failed to create field");
+      throw error;
     }
   },
   fetchFieldById: async (fieldId: string) => {
@@ -101,6 +103,30 @@ const FieldService = {
       return fields;
     } catch (error) {
       console.error("Error in fetching fields by farm ID", error);
+      throw error;
+    }
+  },
+  updateField: async (fieldId: string, fieldFormData: FieldFormData) => {
+    try {
+      const response = await fetch(`${apiUrl}/${fieldId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(fieldFormData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log("Backend error message:", errorData.message);
+        throw new Error(errorData.message);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error during farm update:", error);
       throw error;
     }
   },
