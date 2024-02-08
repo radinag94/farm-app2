@@ -5,13 +5,13 @@ import {
   SoilPageHeader,
   ImageWithSoilsContainer,
   SoilInput,
-  SoilButton,
+  SoilButton,SoilListItem
 } from "./SoilsPage.style";
 import imageSrc from "../../images/gabriel-jimenez-jin4W1HqgL4-unsplash.jpg";
 import { useSoilsLogic } from "./SoilsPage.logic";
 
 function SoilsPage() {
-  const { soils, createSoil, handleDeleteSoil, newSoilType, setNewSoilType } =
+  const { soils=[], createSoil, handleDeleteSoil, newSoilType, setNewSoilType } =
     useSoilsLogic();
 
   return (
@@ -22,12 +22,12 @@ function SoilsPage() {
         <SoilInputContainer>
           <ul>
             {soils.map((soil) => (
-              <li key={soil.id}>
+              <SoilListItem key={soil.id}>
                 {soil.type}
                 <DeleteButton onClick={() => handleDeleteSoil(soil.id)}>
                   Delete
                 </DeleteButton>
-              </li>
+              </SoilListItem>
             ))}
           </ul>
           <SoilInput

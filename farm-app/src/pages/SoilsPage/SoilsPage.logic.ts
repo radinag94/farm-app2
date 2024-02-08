@@ -4,7 +4,7 @@ import SoilService from "../../services/SoilService";
 
 
 export const useSoilsLogic = () => {
-  const {soils,fetchSoils} = useSoils()
+  const {soils=[],fetchSoils} = useSoils()
   const [newSoilType, setNewSoilType] = useState("");
 
   const createSoil = async () => {
