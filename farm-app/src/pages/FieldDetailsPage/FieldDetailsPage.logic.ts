@@ -134,16 +134,21 @@ export const useFieldDetailsLogic = () => {
       return null;
     }
   );
+
   const { data: associatedCrops } = useQuery<CropData[] | null, Error>(
     associatedCropQueryKey,
     async () => {
+      if (!associatedCrops) {
+        return null;
+      }
       if (id) {
         const crops = await CropService.fetchCropsByFieldId(id);
         return crops;
       }
-      return null;
     }
   );
+
+  const hasCrops = associatedCrops && associatedCrops.length > 0;
 
   const { data: associatedGrowingPeriods } = useQuery<
     GrowingPeriodData[] | null,
@@ -181,6 +186,7 @@ export const useFieldDetailsLogic = () => {
     handleUpdateField,
     handleCreateGrowingPeriod,
     handleViewAllGrowingPeriods,
-    mostRecentGrowingPeriod,soilType
+    mostRecentGrowingPeriod,
+    soilType,hasCrops
   };
 };

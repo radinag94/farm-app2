@@ -24,8 +24,10 @@ const FieldDetailsPage = () => {
     handleUpdateField,
     handleCreateGrowingPeriod,
     handleViewAllGrowingPeriods,
+    associatedCrops,
     mostRecentGrowingPeriod,
     soilType,
+    hasCrops,
   } = useFieldDetailsLogic();
 
   return (
@@ -61,9 +63,10 @@ const FieldDetailsPage = () => {
               <div>
                 <p>Associated Crops:</p>
                 <ul>
-                  {associatedCrops.map((crop, index) => (
-                    <li key={index}>{crop.name}</li>
-                  ))}
+                  {associatedCrops &&
+                    associatedCrops.map((crop, index) => (
+                      <li key={index}>{crop.name}</li>
+                    ))}
                 </ul>
               </div>
             ) : (
