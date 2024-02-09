@@ -1,4 +1,8 @@
-import { FieldData } from "../../components/statics/interfaces";
+import {
+  CropData,
+  FieldData,
+  GrowingPeriodData,
+} from "../../components/statics/interfaces";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,29 +10,86 @@ import FieldService from "../../services/FieldService";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { FarmData } from "../../components/statics/interfaces";
-import { useQuery,QueryClient } from "react-query";
+import { useQuery, QueryClient } from "react-query";
+import CropService from "../../services/CropService";
+import GrowingPeriodService from "../../services/GrowingPeriodService";
+import { useSoils } from "../../hooks/useSoils";
+import SoilService from "../../services/SoilService";
 
 const queryClient = new QueryClient();
 
 export const useFieldDetailsLogic = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const mapRef = useRef<L.Map | null>(null);
 
+  const fieldDetailsQueryKey = ["fieldDetails", id];
+  const associatedFarmQueryKey = ["associatedFarm", id];
+  const associatedCropQueryKey = ["associatedCrops", id];
+  const associatedGrowingPeriodsQueryKey = ["associatedGrowingPeriods", id];
 
-  const fieldDetailsQueryKey = ['fieldDetails', id];
-  const associatedFarmQueryKey = ['associatedFarm' ,id]
+  const { soils = [], fetchSoils } = useSoils();
 
-  const { data: fieldDetails, error, isLoading } = useQuery<FieldData | null, Error>(
-    fieldDetailsQueryKey,
-    async () => {
-      if (id) {
-        const data = await FieldService.fetchFieldById(id);
-        return data;
-      }
-      return null;
+  const navigate = useNavigate();
+
+  const [soilType, setSoilType] = useState<string | null>(null);
+
+  // const { fieldId } = useParams<{ fieldId: string }>();
+  const {
+    data: fieldDetails,
+    error,
+    isLoading,
+  } = useQuery<FieldData | null, Error>(fieldDetailsQueryKey, async () => {
+    if (id) {
+      const data = await FieldService.fetchFieldById(id);
+      return data;
     }
-  );
+    return null;
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await fetchSoils();
+
+        if (fieldDetails && fieldDetails.soilId) {
+          try {
+            const soilData = await SoilService.fetchSoilById(
+              fieldDetails.soilId
+            );
+            setSoilType(soilData.type);
+          } catch (error) {
+            console.error("Error fetching soil", error);
+            setSoilType("Soil Deleted");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+
+    fetchData();
+  }, [fieldDetails, fetchSoils]);
+
+  const handleUpdateField = () => {
+    if (fieldDetails && fieldDetails.id) {
+      const updatePath = `/field/${fieldDetails.id}/update-field`;
+      navigate(updatePath);
+    }
+  };
+
+  const handleCreateGrowingPeriod = () => {
+    if (fieldDetails && fieldDetails.id) {
+      const updatePath = `/field/${fieldDetails.id}/create-growing-period`;
+      navigate(updatePath);
+    }
+  };
+
+  const handleViewAllGrowingPeriods = () => {
+    if (fieldDetails && fieldDetails.id) {
+      navigate(`/field/${fieldDetails.id}/growing-periods`);
+    }
+  };
 
   useEffect(() => {
     if (fieldDetails && fieldDetails.shape) {
@@ -73,20 +134,53 @@ export const useFieldDetailsLogic = () => {
       return null;
     }
   );
+  const { data: associatedCrops } = useQuery<CropData[] | null, Error>(
+    associatedCropQueryKey,
+    async () => {
+      if (id) {
+        const crops = await CropService.fetchCropsByFieldId(id);
+        return crops;
+      }
+      return null;
+    }
+  );
 
-
+  const { data: associatedGrowingPeriods } = useQuery<
+    GrowingPeriodData[] | null,
+    Error
+  >(associatedGrowingPeriodsQueryKey, async () => {
+    if (id) {
+      const growingPeriods =
+        await GrowingPeriodService.fetchGrowingPeriodsByFieldId(id);
+      return growingPeriods;
+    }
+    return null;
+  });
+  const mostRecentGrowingPeriod = associatedGrowingPeriods?.[0];
 
   const handleDeleteField = async () => {
     try {
       if (id) {
         await FieldService.deleteFieldById(id);
         queryClient.invalidateQueries(fieldDetailsQueryKey);
-        navigate('/field');
+        navigate("/field");
       }
     } catch (error) {
-      console.error('Error deleting field:', error);
+      console.error("Error deleting field:", error);
     }
   };
 
-  return { fieldDetails, handleDeleteField, associatedFarm, isLoading, error };
+  return {
+    fieldDetails,
+    handleDeleteField,
+    associatedFarm,
+    isLoading,
+    error,
+    associatedCrops,
+    associatedGrowingPeriods,
+    handleUpdateField,
+    handleCreateGrowingPeriod,
+    handleViewAllGrowingPeriods,
+    mostRecentGrowingPeriod,soilType
+  };
 };
