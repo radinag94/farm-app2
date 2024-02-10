@@ -1,5 +1,4 @@
-import { FormData, LoginFormData } from './../components/statics/interfaces';
-
+import { FormData, LoginFormData } from "./../components/statics/interfaces";
 
 const apiUrl = "http://localhost:3000/auth";
 
@@ -17,15 +16,26 @@ const AuthService = {
   },
 
   signin: async (loginFormData: LoginFormData) => {
-    const response = await fetch(`${apiUrl}/signin`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginFormData),
-    });
-    const data = await response.json();
-    return data;
+    try {
+      const response = await fetch(`${apiUrl}/signin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginFormData),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log("Backend error message:", errorData.message);
+        throw new Error(errorData.message);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error during login :", error);
+      throw error;
+    }
   },
 };
 

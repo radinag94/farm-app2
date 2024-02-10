@@ -65,3 +65,13 @@ export const farmFormSchema = Yup.object().shape({
   export const growingPeriodValidationSchema = Yup.object({
     cropId: Yup.string().required("Machine is required"),
   });
+
+  export const loginValidationSchema = Yup.object({
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email cannot be empty"),
+    password: Yup.string()
+      .min(5, "Password must be at least 5 characters long")
+      .max(20, "Password cannot be more than 20 characters long")
+      .required("Password cannot be empty"),
+  });

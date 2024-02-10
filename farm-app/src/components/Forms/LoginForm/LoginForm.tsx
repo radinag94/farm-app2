@@ -1,82 +1,84 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import Button from "../../../ui-elements/button";
 import Input from "../../../ui-elements/input";
 import AuthService from "../../../auth/authService";
 import { useNavigate } from "react-router-dom";
-import { LoginFormData, LoginFormProps } from "../../statics/interfaces";
 import { LoginFormContainer } from "./LoginForm.style";
-
+import { LoginFormProps, LoginFormValues } from "../../statics/interfaces";
+import { loginValidationSchema } from "../../statics/form-validations";
+import { LoginButton } from "../../../ui-elements/submitFormButton";
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
-  const [loginFormData, setLoginFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
-  });
-
-  const [errors, setErrors] = useState<{
-    [key in keyof LoginFormData]?: string;
-  }>({});
-
   const navigate = useNavigate();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLoginFormData({ ...loginFormData, [name]: value });
-  };
+  const formik = useFormik<LoginFormValues>({
+    initialValues: {
+      email: "",
+      password: "",
+      error: "",
+    },
+    validationSchema: loginValidationSchema,
+    onSubmit: async (values, { setSubmitting, setFieldError, resetForm }) => {
+      try {
+        const user = await AuthService.signin(values);
+        onSubmit(user);
+        resetForm();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (loginFormData.email === "") {
-      setErrors({ ...errors, email: "Email can not be empty" });
-      return;
-    }
-
-    if (loginFormData.password === "") {
-      setErrors({ ...errors, password: "Password can not be empty" });
-      return;
-    }
-    if (loginFormData.password.length < 5 || loginFormData.password.length > 20 ) {
-      setErrors({ ...errors, password: "Password is not a valid length" });
-      return;
-    }
-   
-    try {
-      const user = await AuthService.signin(loginFormData);
-     
-      if (user && user.access_token) {
-        localStorage.setItem("accessToken", user.access_token);
+        if (user && user.access_token) {
+          localStorage.setItem("accessToken", user.access_token);
+          navigate("/home");
+        }
+        alert("successful login");
+      } catch (error) {
+        console.log("Caught error in form submission:", error);
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred.";
+        setFieldError("error", errorMessage);
+        setSubmitting(false);
       }
-      console.log("User:", user);
-      setLoginFormData({
-        email: "",
-        password: "",
-      });
-      navigate("/home");
-    } catch (error) {
-      console.error("Error during signup:", error);
-    }
-  };
+    },
+  });
 
   return (
     <LoginFormContainer>
-      <form onSubmit={handleSubmit}>
-        <label>Email:</label>
+      <form onSubmit={formik.handleSubmit}>
+        <label htmlFor="email">Email:</label>
         <Input
-          onChange={handleChange}
-          value={loginFormData.email}
           type="email"
           name="email"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
         />
-        {errors.email && <div>{errors.email}</div>}
-        <label>Password:</label>
+        {formik.touched.email && formik.errors.email && (
+          <div>{formik.errors.email}</div>
+        )}
+
+        <label htmlFor="password">Password:</label>
         <Input
-          onChange={handleChange}
-          value={loginFormData.password}
           type="password"
           name="password"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.password}
         />
-        {errors.password && <div>{errors.password}</div>}
-        <Button label="Login" color="#96db80" />
+        {formik.touched.password && formik.errors.password && (
+          <div>{formik.errors.password}</div>
+        )}
+        {formik.errors.error && (
+          <div className="error-message">{formik.errors.error}</div>
+        )}
+        <LoginButton
+          color="#96db80"
+          type="submit"
+          disabled={formik.isSubmitting}
+        >
+          {"Login"}
+        </LoginButton>
       </form>
     </LoginFormContainer>
   );

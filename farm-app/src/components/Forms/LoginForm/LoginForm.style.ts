@@ -3,6 +3,7 @@ export const LoginFormContainer = styled.div`
   form {
     display: flex;
     flex-direction: column;
+    padding: 20px;
   }
   label {
     margin-bottom: 10px;

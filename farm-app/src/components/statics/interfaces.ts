@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+import { FocusEvent } from "react";
 export interface FieldData {
   id: string;
   name: string;
@@ -229,4 +231,18 @@ export interface UpdateFormValues {
 
 export interface UpdateFarmFormProps {
   id: string;
+}
+
+export interface InputProps {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
+  value: string | number;
+  placeholder?: string;
+  type?: string;
+  name?: string;
+}
+export interface LoginFormValues {
+  email: string;
+  password: string;
+  error?: "";
 }
