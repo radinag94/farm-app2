@@ -20,5 +20,6 @@ export const LoginFormContainer = styled.div`
     color: #f54848;
     display: flex;
     margin: 5px;
+    justify-content: center;
   }
 `;

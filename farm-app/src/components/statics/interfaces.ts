@@ -246,3 +246,9 @@ export interface LoginFormValues {
   password: string;
   error?: "";
 }
+export interface SignUpFormValues {
+  email: string;
+  password: string;
+  confirmPass: string;
+  error?: string
+}

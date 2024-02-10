@@ -1,30 +1,22 @@
-import React, { ChangeEvent, FocusEvent } from "react";
 import styled from "styled-components";
+import { InputProps } from "../components/statics/interfaces";
 
-interface InputProps {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
-  value: string | number;
-  placeholder?: string;
-  type?: string;
-  name?: string;
-}
-
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   padding: 10px;
-  margin: 5px;
+  margin: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  width: 300px;
 `;
 
-const Input: React.FC<InputProps> = ({
+const Input = ({
   onChange,
   onBlur,
   value,
   placeholder,
   name,
-  type,
-}) => {
+  type = 'text',
+}: InputProps) => {
   return (
     <StyledInput
       onChange={onChange}

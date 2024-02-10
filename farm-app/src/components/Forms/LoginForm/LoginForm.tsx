@@ -1,7 +1,5 @@
 import React from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import Button from "../../../ui-elements/button";
 import Input from "../../../ui-elements/input";
 import AuthService from "../../../auth/authService";
 import { useNavigate } from "react-router-dom";

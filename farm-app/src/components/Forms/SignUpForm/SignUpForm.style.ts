@@ -19,5 +19,7 @@ export const SignUpFormContainer = styled.div`
     color: #f54848;
     display: flex;
     margin: 5px;
+    display: flex;
+    justify-content: center;
   }
 `;
