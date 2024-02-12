@@ -1,60 +1,84 @@
 import styled from "styled-components";
-export const DetailsContainer = styled.div`
-  padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-  font-family: Arial, sans-serif;
-  width: auto;
+export const StyledMachineDetailsPage = styled.div`
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 40px;
+  background-color: #e1efe4;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+
+  h2 {
+    font-size: 30px;
+    color: #2c3e50;
+    text-align: center;
+  }
+
+  .loading,
+  .error {
+    font-size: 20px;
+    color: #e74c3c;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  p {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #547b69de;
+  }
+
+  ul {
+    list-style-type: none;
+    margin-top: 20px;
+    padding-left: 0;
+    li {
+      padding: 8px 0;
+      border-bottom: 1px solid #ecf0f1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    max-width: 95%;
+    padding: 20px;
+  }
 `;
 
 export const DetailItem = styled.p`
   color: #333;
-  margin: 10px 0;
   font-size: 16px;
-
+  padding: 5px;
   span {
     font-weight: bold;
   }
 `;
 
-export const Title = styled.h1`
-  color: #50be00;
-  text-align: center;
-  margin-bottom: 20px;
+export const AllDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
-export const UpdateButton = styled.button`
-  background-color: #2abb29d4;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  display: block;
-  width: 100%;
-  font-size: 16px;
-  margin-top: 20px;
-
-  &:hover {
-    background-color: #1b701ad4;
+export const HeaderContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 20px 0px;
+  justify-content: space-between;
+  h2 {
+    color: #40916c;
+    font-weight: 900;
+    font-size: 28px;
   }
-`;
+  & > div {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 
-export const DeleteButton = styled.button`
-  background-color: red;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  display: block;
-  width: 100%;
-  font-size: 16px;
-  margin-top: 20px;
-
-  &:hover {
-    background-color: #1b701ad4;
+    align-items: flex-end;
+  }
+  @media (max-width: 768px) {
+    flex-direction: column;
   }
 `;

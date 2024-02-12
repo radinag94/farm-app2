@@ -1,8 +1,12 @@
 import EmptyList from "../../components/EmptyList/EmptyListMessage";
-import { MachinePageContainer } from "./MachinesPage.style";
-import Button from "../../ui-elements/button";
+import {
+  MachinePageContainer,
+  HeaderContainer,
+  CreateNewMachineButton,
+} from "./MachinesPage.style";
 import MachineCard from "./MachineCard/MachineCard";
 import { useMachineLogic } from "./MachinesPage.logic";
+import UserRoleHOC from "../../auth/userRoleHOC";
 
 function Machine() {
   const {
@@ -12,25 +16,31 @@ function Machine() {
     isError,
   } = useMachineLogic();
   return (
-    <MachinePageContainer>
-      <Button
-        label="Create Machine"
-        color="#afb2ad"
-        onClick={handleCreateMachine}
-      ></Button>
-      <h2>Machine List</h2>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : isError ? (
-        <p>Error loading fields.</p>
-      ) : machines && machines.length > 0 ? (
-        machines.map((machine) => (
-          <MachineCard key={machine.id} machine={machine}></MachineCard>
-        ))
-      ) : (
-        <EmptyList message="No machines available. Create a machine to get started!" />
-      )}
-    </MachinePageContainer>
+    <>
+      <HeaderContainer>
+        <h2>Your Machines</h2>
+        <UserRoleHOC>
+          <div>
+            <CreateNewMachineButton onClick={handleCreateMachine}>
+              Create New Machine
+            </CreateNewMachineButton>
+          </div>
+        </UserRoleHOC>
+      </HeaderContainer>
+      <MachinePageContainer>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : isError ? (
+          <p>Error loading fields.</p>
+        ) : machines && machines.length > 0 ? (
+          machines.map((machine) => (
+            <MachineCard key={machine.id} machine={machine}></MachineCard>
+          ))
+        ) : (
+          <EmptyList message="No machines available. Create a machine to get started!" />
+        )}
+      </MachinePageContainer>
+    </>
   );
 }
 
