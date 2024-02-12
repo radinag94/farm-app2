@@ -46,7 +46,7 @@ const CropService = {
       throw new Error("Failed to create crop");
     }
   },
-  fetchCropsByFieldId: async (fieldId:string) => {
+  fetchCropsByFieldId: async (fieldId: string) => {
     try {
       const response = await fetch(`${apiUrl}/byField/${fieldId}`, {
         method: "GET",
@@ -66,7 +66,7 @@ const CropService = {
       return crops;
     } catch (error) {
       console.error("Error in fetching crops by field ID:", error);
-      throw error
+      throw error;
     }
   },
   deleteCropById: async (cropId: string) => {
