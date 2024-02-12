@@ -4,13 +4,15 @@ import {
   ImageWithProcessTypeContainer,
   ProcessTypePageHeader,
   ProcessTypeListItem,
-  ProcessTypeButton,
-  ProcessTypeDeleteButton,
   ProcessTypeImage,
   ProcessTypeInputContainer,
   ProcessTypeInput,
+  StyledProcessTypesPage,
 } from "./ProcessTypes.style";
 import imageSrc from "../../images/edoardo-busti-5ofKC-FQK3Q-unsplash.jpg";
+import { CreateStyledButton } from "../../ui-elements/button";
+import DeleteButton from "../../ui-elements/deleteButton";
+import UserRoleHOC from "../../auth/userRoleHOC";
 function ProcessTypesPage() {
   const {
     processTypes = [],
@@ -21,35 +23,38 @@ function ProcessTypesPage() {
   } = useProcessTypesLogic();
 
   return (
-    <div>
+    <StyledProcessTypesPage>
       <ProcessTypePageHeader>Process Types Page</ProcessTypePageHeader>
       <ImageWithProcessTypeContainer>
         <ProcessTypeImage src={imageSrc} sizes="100px"></ProcessTypeImage>
         <ProcessTypeInputContainer>
+          <UserRoleHOC>
+            <ProcessTypeInput
+              type="text"
+              placeholder="Enter new process type"
+              value={newProcessType}
+              onChange={(e) => setNewProcessType(e.target.value)}
+            />
+            <CreateStyledButton onClick={createProcessType}>
+              Create Soil
+            </CreateStyledButton>
+          </UserRoleHOC>
           <ul>
             {processTypes.map((processType) => (
               <ProcessTypeListItem key={processType.id}>
                 {processType.type}
-                <ProcessTypeDeleteButton
-                  onClick={() => handleDeleteProcessType(processType.id)}
-                >
-                  Delete
-                </ProcessTypeDeleteButton>
+                <UserRoleHOC>
+                  <DeleteButton
+                    label="Delete"
+                    onClick={() => handleDeleteProcessType(processType.id)}
+                  ></DeleteButton>
+                </UserRoleHOC>
               </ProcessTypeListItem>
             ))}
           </ul>
-          <ProcessTypeInput
-            type="text"
-            placeholder="Enter new process type"
-            value={newProcessType}
-            onChange={(e) => setNewProcessType(e.target.value)}
-          />
-          <ProcessTypeButton onClick={createProcessType}>
-            Create Process Type
-          </ProcessTypeButton>
         </ProcessTypeInputContainer>
       </ImageWithProcessTypeContainer>
-    </div>
+    </StyledProcessTypesPage>
   );
 }
 
