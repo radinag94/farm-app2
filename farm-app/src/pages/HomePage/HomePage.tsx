@@ -1,52 +1,96 @@
-import EmptyList from "../../components/EmptyList/EmptyListMessage";
-import { useMachines } from "../../hooks/useMachines";
-import { useFarms } from "../../hooks/useFarms";
-import { HomePageContainer } from "./HomePage.style";
+import {
+  CountFieldContainer,
+  StyledTable,
+  StyledThead,
+  StyledTh,
+  StyledTr,
+  StyledTd,
+  HeaderContainer,
+} from ".//HomePage.style";
+import { useHomePageLogic } from "./HomePage.logic";
 
 function HomePage() {
-  // const fields = useFields();
-  // const machines = useMachines();
-  // const farms = useFarms();
+  const { reportData, soilData, machineData } = useHomePageLogic();
 
   return (
-    <HomePageContainer>
-      {/* <h2>Field List</h2>
-      {fields.length > 0 ? (
-        fields.map((field) => (
-          <div key={field.id}>
-            <strong>{field.name}</strong>
-            <p>Coordinates: {flattenCoordinates(field.shape.coordinates)}</p>
-          </div>
-        ))
-      ) : (
-        <EmptyList message="No fields available. Create a field to get started!" />
-      )} */}
-      {/* <h2>Machine List</h2>
-      {machines.length > 0 ? (
-        machines.map((machine) => {
-          const associatedFarm = farms.find(
-            (farm) => farm.id === machine.farmId
-          );
-
-          return (
-            <div key={machine.id}>
-              <strong>Name: {machine.name}</strong>
-              <p>Brand: {machine.brand}</p>
-              <p>Register Number: {machine.registerNumber}</p>
-              <p>Farm ID: {machine.farmId}</p>
-              {associatedFarm && (
-                <div>
-                  <p>Farm Name: {associatedFarm.name}</p>
-                </div>
-              )}
-            </div>
-          );
-        })
-      ) : (
-        <EmptyList message="No machines available. Create a machine to get started!" />
-      )} */}
-      <h2>Reports</h2>
-    </HomePageContainer>
+    <>
+      <HeaderContainer>
+        <h2>Reports</h2>
+      </HeaderContainer>
+      <CountFieldContainer>
+        <h3>Count of fields per farm and crops</h3>
+        {reportData.length > 0 ? (
+          <StyledTable>
+            <StyledThead>
+              <StyledTr>
+                <StyledTh>Farm Name</StyledTh>
+                <StyledTh>Crop Name</StyledTh>
+                <StyledTh>Field Count</StyledTh>
+              </StyledTr>
+            </StyledThead>
+            <tbody>
+              {reportData.map((item, index) => (
+                <StyledTr key={index}>
+                  <StyledTd data-label="Farm Name">{item.farmname}</StyledTd>
+                  <StyledTd data-label="Crop Name">{item.cropname}</StyledTd>
+                  <StyledTd data-label="Field Count">
+                    {item.fieldcount}
+                  </StyledTd>
+                </StyledTr>
+              ))}
+            </tbody>
+          </StyledTable>
+        ) : (
+          <p>No report data availabable.</p>
+        )}
+        <h3>Most Common Soil Types</h3>
+        {soilData.length > 0 ? (
+          <StyledTable>
+            <StyledThead>
+              <StyledTr>
+                <StyledTh>Farm Name</StyledTh>
+                <StyledTh>Soil Type</StyledTh>
+                <StyledTh>Count</StyledTh>
+              </StyledTr>
+            </StyledThead>
+            <tbody>
+              {soilData.map((item, index) => (
+                <StyledTr key={index}>
+                  <StyledTd data-label="Farm Name">{item.farmName}</StyledTd>
+                  <StyledTd data-label="Soil Type">{item.soilType}</StyledTd>
+                  <StyledTd data-label="Count">{item.soilTypeCount}</StyledTd>
+                </StyledTr>
+              ))}
+            </tbody>
+          </StyledTable>
+        ) : (
+          <p>No soil data available.</p>
+        )}
+        <h3>Farms with most machines</h3>
+        {machineData.length > 0 ? (
+          <StyledTable>
+            <StyledThead>
+              <StyledTr>
+                <StyledTh>Farm Name</StyledTh>
+                <StyledTh></StyledTh>
+                <StyledTh>Count</StyledTh>
+              </StyledTr>
+            </StyledThead>
+            <tbody>
+              {machineData.map((item, index) => (
+                <StyledTr key={index}>
+                  <StyledTd data-label="Farm Name">{item.farmName}</StyledTd>
+                  <StyledTd></StyledTd>
+                  <StyledTd data-label="Count">{item.machineCount}</StyledTd>
+                </StyledTr>
+              ))}
+            </tbody>
+          </StyledTable>
+        ) : (
+          <p>No soil data available.</p>
+        )}
+      </CountFieldContainer>
+    </>
   );
 }
 

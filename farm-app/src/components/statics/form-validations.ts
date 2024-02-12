@@ -18,7 +18,7 @@ export const machineValidationSchema = Yup.object({
   farmId: Yup.string().required("Required"),
 });
 
-export const FieldFormSchema = Yup.object().shape({
+export const fieldFormSchema = Yup.object().shape({
   name: Yup.string().required("Field name is required"),
   fieldArea: Yup.number()
     .positive("Field area must be positive")
@@ -98,4 +98,13 @@ export const signUpValidationSchema = Yup.object({
   confirmPass: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Confirm password is required"),
+});
+
+export const createGrowingPeriodValidationSchema = Yup.object().shape({
+  cropId: Yup.string().required("Crop is required"),
+  machineId: Yup.string().required("Machine is required"),
+  processTypeId: Yup.string().required("Process type is required"),
+  pDate: Yup.date()
+    .required("Processing date is required")
+    .typeError("Invalid date"),
 });

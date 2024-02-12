@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, ReactNode } from "react";
 import { FocusEvent } from "react";
 export interface FieldData {
   id: string;
@@ -204,12 +204,16 @@ export interface UpdateFieldFormValues {
 }
 
 export interface GrowingPeriodData {
-  id: string;
+  id?: string;
   cropId: string;
   fieldId: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
+  processTypeId: string;
+  machineId: string;
+  pDate?: string;
+  error?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: string | null;
 }
 export interface UpdateMachineFormValues {
   name: string;
@@ -250,5 +254,73 @@ export interface SignUpFormValues {
   email: string;
   password: string;
   confirmPass: string;
-  error?: string
+  error?: string;
+}
+
+export interface FieldCultivationData {
+  id: string;
+  pDate: string;
+  machineId: string;
+  processTypeId: string;
+  growingPeriodId: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export interface DecodedToken {
+  exp: number;
+  role: string;
+  email: string;
+}
+export interface AuthContextType {
+  isAuthenticated: boolean;
+  setIsAuthenticated: (value: boolean) => void;
+  user: { role: string; email: string } | null;
+}
+
+export interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export interface BaseLayoutProps {
+  children: React.ReactNode;
+}
+
+export interface ReportDataItem {
+  farmname: string;
+  cropname: string;
+  fieldcount: number;
+}
+
+export interface SoilDataItem {
+  farmName: string;
+  soilType: string;
+  soilTypeCount: number;
+}
+
+export interface MachineDataItem {
+  farmName: string;
+  machineCount: number;
+}
+
+export interface LandingPageLogic {
+  handleSignUpSubmit: (formData: FormData) => void;
+  handleLoginSubmit: (formData: LoginFormData) => void;
+}
+export interface UpdateFieldFormProps {
+  id: string;
+}
+export interface ErrorResponse {
+  message: string;
+}
+export interface SubmitFormButtonProps {
+  label: string;
+  color: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+}
+
+export interface UserRoleHOCProps {
+  children: ReactNode;
 }
