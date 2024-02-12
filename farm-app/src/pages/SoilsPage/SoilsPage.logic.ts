@@ -1,10 +1,9 @@
-import { useState} from "react";
-import {  useSoils } from "../../hooks/useSoils";
+import { useState } from "react";
+import { useSoils } from "../../hooks/useSoils";
 import SoilService from "../../services/SoilService";
 
-
 export const useSoilsLogic = () => {
-  const {soils=[],fetchSoils} = useSoils()
+  const { soils = [], fetchSoils } = useSoils();
   const [newSoilType, setNewSoilType] = useState("");
 
   const createSoil = async () => {
@@ -17,21 +16,20 @@ export const useSoilsLogic = () => {
         deletedAt: null,
       });
       setNewSoilType("");
-      fetchSoils(); 
+      fetchSoils();
     } catch (error) {
       console.error("Error creating soil", error);
     }
   };
 
-
   const handleDeleteSoil = async (soilId: string) => {
-      try {
-        await SoilService.deleteSoilById(soilId);
-        fetchSoils(); 
-      } catch (error) {
-        console.error("Error deleting soil:", error);
-      }
-    };
+    try {
+      await SoilService.deleteSoilById(soilId);
+      fetchSoils();
+    } catch (error) {
+      console.error("Error deleting soil:", error);
+    }
+  };
 
-    return {soils,createSoil,handleDeleteSoil,newSoilType,setNewSoilType}
-}
+  return { soils, createSoil, handleDeleteSoil, newSoilType, setNewSoilType };
+};
