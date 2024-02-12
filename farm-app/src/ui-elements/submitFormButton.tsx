@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { SubmitFormButtonProps } from "../components/statics/interfaces";
 const StyledButton = styled.button<{ color: string }>`
   background-color: ${(props) => props.color};
   padding: 10px;
@@ -13,12 +14,7 @@ const StyledButton = styled.button<{ color: string }>`
   }
 `;
 
-interface SubmitFormButtonProps {
-  label: string;
-  color: string;
-  type?: "button" | "submit" | "reset";
-  disabled?: boolean;
-}
+
 export const LoginButton = styled(StyledButton)`
   margin-top: 30px;
   width: 200px;
@@ -26,7 +22,6 @@ export const LoginButton = styled(StyledButton)`
   &:hover {
     background-color: #588849;
   }
-
 `;
 
 const SubmitFormButton: React.FC<SubmitFormButtonProps> = ({

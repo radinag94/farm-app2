@@ -7,6 +7,9 @@ export const StyledInput = styled.input`
   border-radius: 5px;
   border: 1px solid #ccc;
   width: 300px;
+  @media (max-width:400px) {
+    width: auto;
+  }
 `;
 
 const Input = ({
@@ -15,7 +18,7 @@ const Input = ({
   value,
   placeholder,
   name,
-  type = 'text',
+  type = "text",
 }: InputProps) => {
   return (
     <StyledInput

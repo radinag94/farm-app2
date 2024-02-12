@@ -12,16 +12,12 @@ const StyledButton = styled.button`
   border-radius: 20px;
   cursor: pointer;
   border: 1px solid transparent;
-  /* margin: 10px 10px 0 0; */
 
   &:hover {
     background-color: #df767c;
   }
 `;
-export const DeleteMachineButton = styled(StyledButton)`
-  width: 20vw;
-  margin-top: 20px;
-`;
+export const DeleteMachineButton = styled(StyledButton)``;
 const DeleteButton: React.FC<DeleteButtonProps> = ({ label, onClick }) => {
   return <StyledButton onClick={onClick}>{label}</StyledButton>;
 };
