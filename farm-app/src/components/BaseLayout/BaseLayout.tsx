@@ -1,14 +1,16 @@
 import Header from "./Header/Header";
 import { Container } from "./BaseLayout.style";
-import PropTypes from "prop-types";
+import GlobalLoadingIndicator from "../../global/GlobalLoadingIndicator";
+import { BaseLayoutProps } from "../statics/interfaces";
 
-export const BaseLayout = ({ children }) => (
+
+
+export const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => (
   <Container className={"AAA"}>
     <Header />
+    <GlobalLoadingIndicator />
     {children}
   </Container>
 );
 
-BaseLayout.propTypes = {
-  children: PropTypes.node,
-};
+

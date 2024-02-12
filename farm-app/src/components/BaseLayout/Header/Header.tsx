@@ -1,44 +1,42 @@
-import React, { useEffect } from "react";
-import { useAuth } from "../../../auth/AuthProvider";
 import { navItems } from "./Header.static";
-import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { LogOutButton } from "../../../ui-elements/button";
-import { useNavigate } from "react-router-dom";
 import {
   StyledNav,
   RightNavList,
   LeftNavList,
   StyledNavLink,
   NavItem,
+  Hamburger,
+  MobileNavList,
+  DropdownContent,
+  DropdownItem,
+  DropdownMenu,
+  LogoutLink,
+  UserInfo,
 } from "./Header.style";
+import useHeaderLogic from "./Header.logic";
 
 export const Header = () => {
-  const { isAuthenticated, setIsAuthenticated } = useAuth();
-
-  const navigate = useNavigate();
-  const token = localStorage.getItem("accessToken");
-  useEffect(() => {
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, [token, setIsAuthenticated]);
-
-  const deleteToken = () => {
-    localStorage.removeItem("accessToken");
-  };
-
-  const handleLogout = () => {
-    deleteToken();
-    navigate("/");
-    console.log("the user logged out ");
-  };
+  const {
+    toggleMobileMenu,
+    toggleDropdown,
+    handleLogout,
+    isAuthenticated,
+    user,
+    setIsOpen,
+    isOpen,
+  } = useHeaderLogic();
 
   if (isAuthenticated && window.location.pathname !== "/") {
     return (
       <StyledNav>
+        <Hamburger onClick={toggleMobileMenu}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </Hamburger>
         <LeftNavList>
           {navItems.map((item) => (
             <NavItem key={item.name}>
@@ -46,10 +44,36 @@ export const Header = () => {
             </NavItem>
           ))}
         </LeftNavList>
-        <RightNavList>
+        <MobileNavList $isOpen={isOpen}>
+          {navItems.map((item) => (
+            <NavItem key={item.name}>
+              <StyledNavLink to={item.path} onClick={() => setIsOpen(false)}>
+                {item.name}
+              </StyledNavLink>
+            </NavItem>
+          ))}
           <LogOutButton onClick={handleLogout} color="#96db80">
             LOG OUT
           </LogOutButton>
+        </MobileNavList>
+        <RightNavList>
+          <DropdownMenu>
+            <DropdownItem onClick={toggleDropdown}>
+              <FontAwesomeIcon icon={faUser} />
+              <DropdownContent>
+                {user && (
+                  <>
+                    <UserInfo>{user.email}</UserInfo>
+                    <UserInfo>{user.role}</UserInfo>
+                    <hr />
+                  </>
+                )}
+                <LogoutLink href="/" onClick={handleLogout}>
+                  LOG OUT
+                </LogoutLink>
+              </DropdownContent>
+            </DropdownItem>
+          </DropdownMenu>
         </RightNavList>
       </StyledNav>
     );
@@ -57,5 +81,4 @@ export const Header = () => {
     return null;
   }
 };
-
 export default Header;
