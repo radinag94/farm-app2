@@ -1,10 +1,16 @@
-import styled from "styled-components"
-export const CreatePageHeader= styled.h2 `
-    color: #25c40c;
-    margin-bottom: 20px;
-    font-size: 24px;
-    width: 100%;
-    text-align: center;
-    margin-top: 20px;
-    `
-  
+import styled from "styled-components";
+export const CreatePageHeader = styled.h2`
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 20px 20px;
+  justify-content: space-between;
+
+  color: #40916c;
+  font-weight: 900;
+  font-size: 28px;
+
+  & > div {
+    display: flex;
+  }
+`;

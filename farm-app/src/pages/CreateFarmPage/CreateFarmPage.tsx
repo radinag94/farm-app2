@@ -6,11 +6,11 @@ import { CreatePageHeader } from "./CreateFarmPage.style";
 import { useCreateFarmLogic } from "./CreateFarmPage.logic";
 
 const CreateFarmPage = () => {
- const{handleFormSubmit} =useCreateFarmLogic()
+  const { handleFormSubmit } = useCreateFarmLogic();
 
   return (
     <div>
-      <CreatePageHeader>Create a New Farm</CreatePageHeader>
+      <CreatePageHeader>Create New Farm</CreatePageHeader>
       <FarmForm onSubmit={handleFormSubmit} />
     </div>
   );
