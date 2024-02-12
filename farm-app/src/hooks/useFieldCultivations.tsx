@@ -1,16 +1,7 @@
 import { useState, useEffect } from "react";
 import FieldCultivationService from "../services/FieldCultivationService";
+import { FieldCultivationData } from "../components/statics/interfaces";
 
-export interface FieldCultivationData {
-  id: string;
-  pDate: string;
-  machineId: string;
-  processTypeId: string;
-  growingPeriodId: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
 
 export const useFieldCultivations = () => {
   const [fieldCultivations, setFieldCultivations] = useState<
