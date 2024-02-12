@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import Input from "../../../ui-elements/input";
-import { ErrorMessage } from "formik";
-import Button from "../../../ui-elements/button";
 import FarmService from "../../../services/farmService";
 import { FarmFormData } from "../../statics/interfaces";
-import { UpdateFarmFormContainer } from "./UpdateFarmForm.style";
+import {
+  UpdateFarmFormContainer,
+  StyledUpdateFarmFormContainer,
+} from "./UpdateFarmForm.style";
 import { updateFarmFormSchema } from "../../statics/form-validations";
-import { UpdateFarmFormProps,UpdateFormValues } from "../../statics/interfaces";
-
+import {
+  UpdateFarmFormProps,
+  UpdateFormValues,
+} from "../../statics/interfaces";
+import SubmitFormButton from "../../../ui-elements/submitFormButton";
 
 const UpdateFarmForm: React.FC<UpdateFarmFormProps> = ({ id }) => {
   const navigate = useNavigate();
@@ -87,54 +90,56 @@ const UpdateFarmForm: React.FC<UpdateFarmFormProps> = ({ id }) => {
   });
 
   return (
-    <UpdateFarmFormContainer>
-      <form onSubmit={formik.handleSubmit}>
-        <label htmlFor="name">Farm Name</label>
-        <Input
-          name="name"
-          type="text"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.name}
-        />
-        {formik.touched.name && formik.errors.name ? (
-          <div>{formik.errors.name}</div>
-        ) : null}
-        <div>
-          <label htmlFor="latitude">Latitude</label>
+    <StyledUpdateFarmFormContainer>
+      <UpdateFarmFormContainer>
+        <form onSubmit={formik.handleSubmit}>
+          <label htmlFor="name">Farm Name</label>
           <Input
-            name="latitude"
+            name="name"
             type="text"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.latitude}
+            value={formik.values.name}
           />
-          {formik.touched.latitude && formik.errors.latitude ? (
-            <div>{formik.errors.latitude}</div>
+          {formik.touched.name && formik.errors.name ? (
+            <div>{formik.errors.name}</div>
           ) : null}
-        </div>
-        <label htmlFor="longitude">Longitude</label>
-        <Input
-          name="longitude"
-          type="text"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.longitude}
-        />
-        {formik.touched.longitude && formik.errors.longitude ? (
-          <div>{formik.errors.longitude}</div>
-        ) : null}
-        {formik.errors.error && (
-          <div className="error-message">{formik.errors.error}</div>
-        )}
-        <Button
-          type="submit"
-          label="Update farm"
-          color="#96db80"
-          disabled={formik.isSubmitting}
-        />
-      </form>
-    </UpdateFarmFormContainer>
+          <div>
+            <label htmlFor="latitude">Latitude</label>
+            <Input
+              name="latitude"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.latitude}
+            />
+            {formik.touched.latitude && formik.errors.latitude ? (
+              <div>{formik.errors.latitude}</div>
+            ) : null}
+          </div>
+          <label htmlFor="longitude">Longitude</label>
+          <Input
+            name="longitude"
+            type="text"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.longitude}
+          />
+          {formik.touched.longitude && formik.errors.longitude ? (
+            <div>{formik.errors.longitude}</div>
+          ) : null}
+          {formik.errors.error && (
+            <div className="error-message">{formik.errors.error}</div>
+          )}
+          <SubmitFormButton
+            type="submit"
+            label="Update farm"
+            color="#96db80"
+            disabled={formik.isSubmitting}
+          />
+        </form>
+      </UpdateFarmFormContainer>
+    </StyledUpdateFarmFormContainer>
   );
 };
 

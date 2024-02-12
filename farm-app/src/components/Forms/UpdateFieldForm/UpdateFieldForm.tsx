@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import Button from "../../../ui-elements/button";
 import { useFarms } from "../../../hooks/useFarms";
 import { useSoils } from "../../../hooks/useSoils";
 import FieldService from "../../../services/FieldService";
 import { FieldFormData } from "../../statics/interfaces";
 import { UpdateFieldFormContainer } from "./UpdateFieldForm.style";
 import { useNavigate } from "react-router";
-import { useParams } from "react-router";
 import { updateFieldFormSchema } from "../../statics/form-validations";
 import { UpdateFieldFormValues } from "../../statics/interfaces";
+import SubmitFormButton from "../../../ui-elements/submitFormButton";
+import { StyledUpdateFieldFormContainer } from "./UpdateFieldForm.style";
+import { UpdateFieldFormProps } from "../../statics/interfaces";
 
-const UpdateFieldForm = () => {
+const UpdateFieldForm: React.FC<UpdateFieldFormProps> = ({ id }) => {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
+
   const { farms = [] } = useFarms();
   const { soils = [] } = useSoils();
   const [initialValues, setInitialValues] = useState<UpdateFieldFormValues>({
@@ -86,96 +86,98 @@ const UpdateFieldForm = () => {
   });
 
   return (
-    <UpdateFieldFormContainer>
-      <form onSubmit={formik.handleSubmit}>
-        <label htmlFor="name">Field Name:</label>
-        <input
-          name="name"
-          type="text"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.name}
-        />
-        {formik.touched.name && formik.errors.name && (
-          <div>{formik.errors.name}</div>
-        )}
+    <StyledUpdateFieldFormContainer>
+      <UpdateFieldFormContainer>
+        <form onSubmit={formik.handleSubmit}>
+          <label htmlFor="name">Field Name:</label>
+          <input
+            name="name"
+            type="text"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.name}
+          />
+          {formik.touched.name && formik.errors.name && (
+            <div>{formik.errors.name}</div>
+          )}
 
-        <label htmlFor="fieldArea">Field Area:</label>
-        <input
-          name="fieldArea"
-          type="number"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.fieldArea}
-        />
-        {formik.touched.fieldArea && formik.errors.fieldArea && (
-          <div>{formik.errors.fieldArea}</div>
-        )}
+          <label htmlFor="fieldArea">Field Area:</label>
+          <input
+            name="fieldArea"
+            type="number"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.fieldArea}
+          />
+          {formik.touched.fieldArea && formik.errors.fieldArea && (
+            <div>{formik.errors.fieldArea}</div>
+          )}
 
-        <label htmlFor="soilId">Soil Type:</label>
-        <select
-          name="soilId"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.soilId}
-        >
-          <option value="" disabled>
-            Select a Soil
-          </option>
-          {soils.map((soil) => (
-            <option key={soil.id} value={soil.id}>
-              {soil.type}
+          <label htmlFor="soilId">Soil Type:</label>
+          <select
+            name="soilId"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.soilId}
+          >
+            <option value="" disabled>
+              Select a Soil
             </option>
-          ))}
-        </select>
-        {formik.touched.soilId && formik.errors.soilId && (
-          <div>{formik.errors.soilId}</div>
-        )}
+            {soils.map((soil) => (
+              <option key={soil.id} value={soil.id}>
+                {soil.type}
+              </option>
+            ))}
+          </select>
+          {formik.touched.soilId && formik.errors.soilId && (
+            <div>{formik.errors.soilId}</div>
+          )}
 
-        <label htmlFor="farmId">Farm:</label>
-        <select
-          name="farmId"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.farmId}
-        >
-          <option value="" disabled>
-            Select a Farm
-          </option>
-          {farms.map((farm) => (
-            <option key={farm.id} value={farm.id}>
-              {farm.name}
+          <label htmlFor="farmId">Farm:</label>
+          <select
+            name="farmId"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.farmId}
+          >
+            <option value="" disabled>
+              Select a Farm
             </option>
-          ))}
-        </select>
-        {formik.touched.farmId && formik.errors.farmId && (
-          <div>{formik.errors.farmId}</div>
-        )}
+            {farms.map((farm) => (
+              <option key={farm.id} value={farm.id}>
+                {farm.name}
+              </option>
+            ))}
+          </select>
+          {formik.touched.farmId && formik.errors.farmId && (
+            <div>{formik.errors.farmId}</div>
+          )}
 
-        <label htmlFor="coordinates">Shape Coordinates:</label>
-        <input
-          name="coordinates"
-          type="text"
-          placeholder="Enter coordinates separated by commas"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.coordinates}
-        />
-        {formik.touched.coordinates && formik.errors.coordinates && (
-          <div>{formik.errors.coordinates}</div>
-        )}
-        {formik.errors.error && (
-          <div className="error-message">{formik.errors.error}</div>
-        )}
+          <label htmlFor="coordinates">Shape Coordinates:</label>
+          <input
+            name="coordinates"
+            type="text"
+            placeholder="Enter coordinates separated by commas"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.coordinates}
+          />
+          {formik.touched.coordinates && formik.errors.coordinates && (
+            <div>{formik.errors.coordinates}</div>
+          )}
+          {formik.errors.error && (
+            <div className="error-message">{formik.errors.error}</div>
+          )}
 
-        <Button
-          label="Update Field"
-          color="#96db80"
-          type="submit"
-          disabled={formik.isSubmitting}
-        />
-      </form>
-    </UpdateFieldFormContainer>
+          <SubmitFormButton
+            label="Update Field"
+            color="#97a97c"
+            type="submit"
+            disabled={formik.isSubmitting}
+          />
+        </form>
+      </UpdateFieldFormContainer>
+    </StyledUpdateFieldFormContainer>
   );
 };
 
