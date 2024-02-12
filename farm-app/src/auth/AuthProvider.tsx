@@ -1,23 +1,26 @@
-import { ReactNode, createContext, useContext, useState,useEffect } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router";
+import {
+  AuthContextType,
+  AuthProviderProps,
+  DecodedToken,
+} from "../components/statics/interfaces";
 
-interface AuthContextType {
-  isAuthenticated: boolean;
-  // loginUser: (loginFormData: LoginFormData) => Promise<void>;
-  // registerUser: (formData: FormData) => Promise<void>;
-  setIsAuthenticated: (value: boolean) => void;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [user, setUser] = useState<{ role: string; email: string } | null>(
+    null
+  );
 
-  const publicRoutes = ['/'];
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   function isExpired(exp: number | undefined) {
     const currentTime = Date.now() / 1000;
     return exp < currentTime;
@@ -35,51 +38,38 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const isValid = authToken && isTokenValid(authToken);
     return isValid ? true : false;
   });
-  useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem("accessToken");
-      const isValidToken = token && isTokenValid(token);
- 
-      if (!isValidToken&&!publicRoutes.includes(window.location.pathname)) {
-        setIsAuthenticated(false);
-        navigate("/");
-      } else {
-        if (!publicRoutes.includes(window.location.pathname)) {
-            setIsAuthenticated(true);
-          }
-      }
-    };
- 
-    checkAuth();
-  }, [navigate]);
- 
 
+  useEffect(() => {
+    const authToken = localStorage.getItem("accessToken");
+    if (authToken) {
+      const decoded: DecodedToken = jwtDecode(authToken);
+      if (decoded.exp * 1000 > Date.now()) {
+        setIsAuthenticated(true);
+        setUser({ role: decoded.role, email: decoded.email });
+      } else {
+        localStorage.removeItem("accessToken");
+        setIsAuthenticated(false);
+        setUser(null);
+        navigate("/");
+      }
+    }
+  }, [navigate]);
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
         setIsAuthenticated,
+        user,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
-const useAuth = () => {
+export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  const { isAuthenticated } = context;
-
-  const setIsAuthenticated = (value: boolean) => {
-    context.setIsAuthenticated(value);
-  };
-
-  return {
-    isAuthenticated,
-    setIsAuthenticated,
-  };
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
+  return context;
 };
 
-export { useAuth, AuthProvider };
+export { AuthProvider };
