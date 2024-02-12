@@ -24,6 +24,7 @@ import ProcessTypesPage from "./pages/ProcessTypesPage/ProcessTypesPage";
 import CreateFieldCultivationPage from "./pages/CreateFieldCultivationPage/CreateFieldCultivationPage";
 import GrowingPeriodDetailsPage from "./pages/GrowingPeriodDetailsPage/GrowingPeriodDetailsPage";
 import CreateGrowingPeriodPage from "./pages/CreateGrowingPeriodPage/CreateGrowingPeriodPage";
+import FieldGrowingPeriodsPage from "./pages/FieldGrowingPeriodsPage/FieldGrowingPeriodsPage";
 
 function App() {
   return (
@@ -44,6 +45,10 @@ function App() {
               <Route
                 path={routes.fieldDetails}
                 element={<FieldDetailsPage />}
+              />
+              <Route
+                path={routes.fieldGrowingPeriods}
+                element={<FieldGrowingPeriodsPage />}
               />
               <Route path={routes.updateField} element={<UpdateFieldPage />} />
               <Route
@@ -78,7 +83,6 @@ function App() {
               <Route path={routes.crop} element={<CropsPage />} />
               <Route path={routes.soil} element={<SoilsPage />} />
               <Route path={routes.processType} element={<ProcessTypesPage />} />
-
               <Route path={routes.notFound} element={<NotFoundPage />} />
             </Routes>
           </BaseLayout>
