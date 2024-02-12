@@ -1,5 +1,4 @@
-import { UpdateMachineFormValues } from "../components/Forms/UpdateMachineForm/UpdateMachineForm";
-import { MachineFormData } from "../components/statics/interfaces";
+import { MachineFormData, UpdateMachineFormValues } from "../components/statics/interfaces";
 const apiUrl = "http://localhost:3000/machine";
 
 const MachineService = {
