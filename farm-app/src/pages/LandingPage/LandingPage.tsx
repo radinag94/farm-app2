@@ -1,15 +1,7 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import SignUpForm, {
-  FormData as SignUpFormData,
-} from "../../components/Forms/SignUpForm/SignUpForm";
-import LoginForm, {
-  LoginFormData,
-} from "../../components/Forms/LoginForm/LoginForm";
-import { useNavigate } from "react-router-dom";
+import SignUpForm from "../../components/Forms/SignUpForm/SignUpForm";
+import LoginForm from "../../components/Forms/LoginForm/LoginForm";
 import Button from "../../ui-elements/button";
-import { routes } from "../../components/statics/routes";
-import { useAuth } from "../../auth/AuthProvider";
 import { LandingPageProps } from "../../components/statics/interfaces";
 import {
   LandingPageContainer,
@@ -54,6 +46,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
                   onClick={handleToggleSignUp}
                   color="#96db80"
                 />
+                <div> Or</div>
                 <Button
                   label="Login"
                   onClick={handleToggleLogin}
@@ -64,7 +57,6 @@ const LandingPage: React.FC<LandingPageProps> = () => {
           </TextAndButtons>
           {showSignUp && (
             <>
-              <h2>Sign Up</h2>
               <SignUpForm onSubmit={handleSignUpSubmit} />
               <p>
                 Already have an account?{" "}
@@ -76,7 +68,6 @@ const LandingPage: React.FC<LandingPageProps> = () => {
           )}
           {showLogin && (
             <>
-              <h2>Login</h2>
               <LoginForm onSubmit={handleLoginSubmit} />
               <p>
                 Don't have an account?{" "}

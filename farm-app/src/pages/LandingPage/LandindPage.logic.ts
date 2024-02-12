@@ -1,22 +1,14 @@
-import { FormData as SignUpFormData } from "../../components/Forms/SignUpForm/SignUpForm";
-import { LoginFormData } from "../../components/Forms/LoginForm/LoginForm";
+import { FormData as SignUpFormData } from "../../components/statics/interfaces";
+import { LoginFormData } from "../../components/statics/interfaces";
 import { useNavigate } from "react-router-dom";
 
 import { routes } from "../../components/statics/routes";
 import { useAuth } from "../../auth/AuthProvider";
 
-interface LandingPageLogic {
-  handleSignUpSubmit: (formData: SignUpFormData) => void;
-  handleLoginSubmit: (formData: LoginFormData) => void;
-}
 
 const useLandingPageLogic = (): LandingPageLogic => {
   const navigate = useNavigate();
-  const { 
-    // loginUser,
-    //  registerUser, 
-     setIsAuthenticated } = useAuth();
-     
+  const { setIsAuthenticated } = useAuth();
 
   const handleSignUpSubmit = (formData: SignUpFormData) => {
     if (formData.password !== formData.confirmPass) {
@@ -24,7 +16,6 @@ const useLandingPageLogic = (): LandingPageLogic => {
       return;
     }
     console.log("Sign Up form submitted:", formData);
-    // registerUser(formData);
   };
 
   const handleLoginSubmit = async () => {
