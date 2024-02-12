@@ -17,15 +17,15 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   return (
     <>
-    <FarmCardContainer onClick={() => handleClick()}>
-      <FarmCardContent>
-        <FarmCardTitle>{farm.name}</FarmCardTitle>
-      </FarmCardContent>
-      <FarmImage
-        src="src/images/julian-scholl-HGJqVcbQLgk-unsplash.jpg"
-        alt="Farm Image"
-      />
-     </FarmCardContainer>
+      <FarmCardContainer onClick={() => handleClick()}>
+        <FarmCardContent>
+          <FarmCardTitle>{farm.name}</FarmCardTitle>
+        </FarmCardContent>
+        <FarmImage
+          src="src/images/julian-scholl-HGJqVcbQLgk-unsplash.jpg"
+          alt="Farm Image"
+        />
+      </FarmCardContainer>
     </>
   );
 };

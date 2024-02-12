@@ -12,10 +12,11 @@ export const StyledFarmDetailsPage = styled.div`
   background-color: #e1efe4;
 
   p {
-    font-size: 18px;
-    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: 600;
+    padding: 30px;
     line-height: 1.5;
-    text-align: center;
+    color: #547b69de;
   }
 
   .loading {
@@ -25,12 +26,15 @@ export const StyledFarmDetailsPage = styled.div`
   h3 {
     text-align: center;
     padding: 20px;
+    font-size: 18px;
   }
 `;
 
 export const FarmDetailsTitle = styled.div`
+  color: #40916c;
+  font-weight: 900;
   font-size: 28px;
-  color: #333333;
+  width: 100%;
   margin-bottom: 20px;
   text-align: center;
 `;
@@ -62,13 +66,25 @@ export const InfoContainer = styled.div`
   padding: 10px;
   text-align: center;
   width: 70%;
-  margin-left: 20px;
+  /* margin-left: 20px; */
+
   background-color: #9edca1;
+
+  p {
+    font-size: 18px;
+    padding: 20px;
+    line-height: 1;
+    text-align: center;
+  }
+  @media (max-width: 599px) {
+    width: 100%;
+  }
 `;
 
 export const StyledMapWithInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 20px;
 
   @media (min-width: 600px) {
     flex-direction: row;
@@ -85,4 +101,30 @@ export const AssociatedStuff = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+`;
+
+export const HeaderContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 20px 20px;
+  justify-content: space-between;
+  h2 {
+    color: #40916c;
+    font-weight: 900;
+    font-size: 28px;
+  }
+  & > div {
+    display: flex;
+    gap: 10px;
+  }
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  padding: 20px;
 `;

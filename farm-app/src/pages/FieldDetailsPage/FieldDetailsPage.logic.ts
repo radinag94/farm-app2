@@ -20,7 +20,6 @@ const queryClient = new QueryClient();
 
 export const useFieldDetailsLogic = () => {
   const { id } = useParams<{ id: string }>();
-  // const navigate = useNavigate();
   const mapRef = useRef<L.Map | null>(null);
 
   const fieldDetailsQueryKey = ["fieldDetails", id];
@@ -28,24 +27,30 @@ export const useFieldDetailsLogic = () => {
   const associatedCropQueryKey = ["associatedCrops", id];
   const associatedGrowingPeriodsQueryKey = ["associatedGrowingPeriods", id];
 
-  const { soils = [], fetchSoils } = useSoils();
+  const { fetchSoils } = useSoils();
 
   const navigate = useNavigate();
 
   const [soilType, setSoilType] = useState<string | null>(null);
 
-  // const { fieldId } = useParams<{ fieldId: string }>();
   const {
     data: fieldDetails,
     error,
     isLoading,
-  } = useQuery<FieldData | null, Error>(fieldDetailsQueryKey, async () => {
-    if (id) {
-      const data = await FieldService.fetchFieldById(id);
-      return data;
+  } = useQuery<FieldData | null, Error>(
+    fieldDetailsQueryKey,
+    async () => {
+      if (id) {
+        const data = await FieldService.fetchFieldById(id);
+        return data;
+      }
+
+      return null;
+    },
+    {
+      retry: false,
     }
-    return null;
-  });
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,6 +137,9 @@ export const useFieldDetailsLogic = () => {
         return farm;
       }
       return null;
+    },
+    {
+      retry: false,
     }
   );
 
@@ -145,6 +153,9 @@ export const useFieldDetailsLogic = () => {
         const crops = await CropService.fetchCropsByFieldId(id);
         return crops;
       }
+    },
+    {
+      retry: false,
     }
   );
 
@@ -153,14 +164,20 @@ export const useFieldDetailsLogic = () => {
   const { data: associatedGrowingPeriods } = useQuery<
     GrowingPeriodData[] | null,
     Error
-  >(associatedGrowingPeriodsQueryKey, async () => {
-    if (id) {
-      const growingPeriods =
-        await GrowingPeriodService.fetchGrowingPeriodsByFieldId(id);
-      return growingPeriods;
+  >(
+    associatedGrowingPeriodsQueryKey,
+    async () => {
+      if (id) {
+        const growingPeriods =
+          await GrowingPeriodService.fetchGrowingPeriodsByFieldId(id);
+        return growingPeriods;
+      }
+      return null;
+    },
+    {
+      retry: false,
     }
-    return null;
-  });
+  );
   const mostRecentGrowingPeriod = associatedGrowingPeriods?.[0];
 
   const handleDeleteField = async () => {
@@ -187,6 +204,7 @@ export const useFieldDetailsLogic = () => {
     handleCreateGrowingPeriod,
     handleViewAllGrowingPeriods,
     mostRecentGrowingPeriod,
-    soilType,hasCrops
+    soilType,
+    hasCrops,
   };
 };

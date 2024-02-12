@@ -1,19 +1,17 @@
 import { useFieldDetailsLogic } from "./FieldDetailsPage.logic";
-import { StyledFieldDetailsPage } from "./FieldDetailsPage.style";
-import { flattenCoordinates } from "../HomePage/HomePage.logic";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import { FarmData } from "../../components/statics/interfaces";
-import FieldService from "../../services/FieldService";
-import { useSoils } from "../../hooks/useSoils";
-import SoilService from "../../services/SoilService";
-import { useCrops } from "../../hooks/useCrops";
-import CropService from "../../services/CropService";
-import GrowingPeriodCard from "../GrowingPeriodCard/GrowingPeriodCard";
 import {
-  AssociatedStuff,
-  SmallGrowingPeriodCardContainer,
+  StyledFieldDetailsPage,
+  HeaderContainer,
+  FieldInfoContainer,
+  CreateButtonContainer,
 } from "./FieldDetailsPage.style";
+import { flattenCoordinates } from "../HomePage/HomePage.logic";
+import DeleteButton from "../../ui-elements/deleteButton";
+import { formatDate } from "../../services/FormatDate";
+import UserRoleHOC from "../../auth/userRoleHOC";
+import { UpdateButton } from "../../ui-elements/button";
+import { CreateGrowingPeriodButton } from "../../ui-elements/button";
+import { ViewAllGrowingPeriodsButton } from "../../ui-elements/button";
 const FieldDetailsPage = () => {
   const {
     fieldDetails,
@@ -24,63 +22,72 @@ const FieldDetailsPage = () => {
     handleUpdateField,
     handleCreateGrowingPeriod,
     handleViewAllGrowingPeriods,
-    associatedCrops,
     mostRecentGrowingPeriod,
     soilType,
-    hasCrops,
   } = useFieldDetailsLogic();
 
   return (
     <StyledFieldDetailsPage>
-      <h2>Field Details Page</h2>
-      <button onClick={handleDeleteField}>Delete Field</button>
-      <button onClick={handleUpdateField}>Update Field</button>
-      {/* <button onClick={handleCreateFieldCultivation}>
-        Create Field Cultivation
-      </button> */}
-      <button onClick={handleCreateGrowingPeriod}>Create Growing Period</button>
+      <HeaderContainer>
+        <h2>Field Details</h2>
+        <UserRoleHOC>
+          <div>
+            <UpdateButton onClick={handleUpdateField} color="#f4a259">
+              {"Update Field"}
+            </UpdateButton>
+            <DeleteButton
+              onClick={handleDeleteField}
+              label="Delete field"
+            ></DeleteButton>
+          </div>
+        </UserRoleHOC>
+      </HeaderContainer>
+
       {isLoading ? (
         <p className="loading">Loading farm details...</p>
       ) : error ? (
         <p className="error">Error loading farm details: {error.message}</p>
       ) : (
         fieldDetails && (
-          <div>
-            <p>Field Name: {fieldDetails.name}</p>
+          <FieldInfoContainer>
+            <p>Name: {fieldDetails.name}</p>
+            <UserRoleHOC>
+              <CreateButtonContainer>
+                <CreateGrowingPeriodButton
+                  onClick={handleCreateGrowingPeriod}
+                  color="#68b0ab"
+                >
+                  {"Create Growing Period"}
+                </CreateGrowingPeriodButton>
+              </CreateButtonContainer>
+            </UserRoleHOC>
             <p>
               Location: {flattenCoordinates(fieldDetails.shape.coordinates)}
             </p>
             <div id="fieldMap" style={{ height: "400px", width: "100%" }}></div>
             <p>Soil Type: {soilType}</p>
-            <p>Created At: {fieldDetails.createdAt}</p>
-            <p>Updated At: {fieldDetails.updatedAt}</p>
+            <p>
+              Created At: {fieldDetails && formatDate(fieldDetails.createdAt)}
+            </p>
+            <p>
+              Updated At: {fieldDetails && formatDate(fieldDetails.updatedAt)}
+            </p>
             {associatedFarm && (
               <div>
-                <p>Farm Name: {associatedFarm.name}</p>
+                <p>Farm: {associatedFarm.name}</p>
               </div>
             )}
-            {/* {hasCrops ? (
-              <div>
-                <p>Associated Crops:</p>
-                <ul>
-                  {associatedCrops &&
-                    associatedCrops.map((crop, index) => (
-                      <li key={index}>{crop.name}</li>
-                    ))}
-                </ul>
-              </div>
-            ) : (
-              <p>No associated crops.</p>
-            )} */}
-            <h3>GrowingPeriods</h3>
             {mostRecentGrowingPeriod ? (
-              <button onClick={handleViewAllGrowingPeriods}>
-                View all growing periods
-              </button>
+              <ViewAllGrowingPeriodsButton
+                color="#7ae582"
+                onClick={handleViewAllGrowingPeriods}
+              >
+                {"View All Growing Periods"}
+              </ViewAllGrowingPeriodsButton>
             ) : (
               <p>No growing periods available.</p>
             )}
-          </div>
+          </FieldInfoContainer>
         )
       )}
     </StyledFieldDetailsPage>

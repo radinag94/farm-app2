@@ -2,7 +2,7 @@ import { MachineData } from "./../../components/statics/interfaces";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { FarmData, FieldData } from "../../components/statics/interfaces";
+import { FieldData } from "../../components/statics/interfaces";
 import FarmService from "../../services/farmService";
 import L from "leaflet";
 import MachineService from "../../services/MachineService";
@@ -26,7 +26,7 @@ export const useFarmDetailsLogic = () => {
       return FarmService.fetchFarmById(id);
     },
     {
-      enabled: !!id,
+      retry: false,
     }
   );
   const [showFields, setShowFields] = useState(false);
@@ -44,7 +44,7 @@ export const useFarmDetailsLogic = () => {
     },
     {
       enabled: !!id && showMachines,
-      retry: 1,
+      retry: false,
     }
   );
 
@@ -60,6 +60,7 @@ export const useFarmDetailsLogic = () => {
     },
     {
       enabled: !!id && showFields,
+      retry: false,
     }
   );
   const toggleShowFields = () => {
@@ -103,6 +104,24 @@ export const useFarmDetailsLogic = () => {
       navigate(updatePath);
     }
   };
+  const fieldsRef = useRef(null);
+  const machinesRef = useRef(null);
+
+  const scrollToRef = (ref: React.RefObject<HTMLDivElement>) => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (showFields && fieldsRef.current) {
+      scrollToRef(fieldsRef);
+    }
+  }, [showFields, associatedFields]);
+
+  useEffect(() => {
+    if (showMachines && machinesRef.current) {
+      scrollToRef(machinesRef);
+    }
+  }, [showMachines, associatedMachines]);
 
   return {
     farmDetails,
@@ -112,7 +131,8 @@ export const useFarmDetailsLogic = () => {
     associatedMachines,
     toggleShowFields,
     associatedFields,
-    toggleShowMachines,handleUpdate,
+    toggleShowMachines,
+    handleUpdate,fieldsRef,machinesRef,
     isError: isFarmDetailsError || isMachinesError || isFieldsError,
     error: farmDetailsError || machinesError || fieldsError,
   };

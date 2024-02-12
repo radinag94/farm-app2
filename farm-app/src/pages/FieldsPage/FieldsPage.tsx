@@ -1,25 +1,28 @@
-import React from "react";
-import { FieldFormData } from "../../components/statics/interfaces";
-import FieldForm from "../../components/Forms/FieldForm/FieldForm";
-import { FieldPageContainer } from "./FieldsPage.style";
-import { useFields } from "../../hooks/useFields";
+import {
+  FieldPageContainer,
+  CreateNewFieldButton,
+  HeaderContainer,
+} from "./FieldsPage.style";
 import EmptyList from "../../components/EmptyList/EmptyListMessage";
 import FieldCard from "./FieldCard/FieldCard";
-import Button from "../../ui-elements/button";
-import { useNavigate } from "react-router";
 import { useFieldPageLogic } from "./FieldsPage.logic";
+import UserRoleHOC from "../../auth/userRoleHOC";
 
 function FieldPage() {
   const { fields, handleCreateField, isLoading, isError } = useFieldPageLogic();
   return (
     <>
+      <HeaderContainer>
+        <h2>Your Fields</h2>
+        <UserRoleHOC>
+          <div>
+            <CreateNewFieldButton onClick={handleCreateField}>
+              Create New Field
+            </CreateNewFieldButton>
+          </div>
+        </UserRoleHOC>
+      </HeaderContainer>
       <FieldPageContainer>
-        <Button
-          label="Create Field"
-          color="#afb2ad"
-          onClick={handleCreateField}
-        ></Button>
-        <h2>Field List</h2>
         {isLoading ? (
           <p>Loading...</p>
         ) : isError ? (

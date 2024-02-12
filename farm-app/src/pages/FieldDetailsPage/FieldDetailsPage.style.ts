@@ -1,77 +1,67 @@
 import styled from "styled-components";
 
 export const StyledFieldDetailsPage = styled.div`
- max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #cce2d4d6;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 40px;
+  background-color: #e1efe4;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 
   h2 {
-    font-size: 28px;
-    color: #333333;
-    margin-bottom: 20px;
+    font-size: 30px;
+    color: #2c3e50;
+    /* margin-bottom: 30px; */
     text-align: center;
-  }
-
-  button {
-    margin: 10px;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  button:hover {
-    background-color: #0056b3;
   }
 
   .loading,
   .error {
-    font-size: 18px;
+    font-size: 20px;
+    color: #e74c3c;
     margin-top: 20px;
     text-align: center;
   }
 
   p {
     font-size: 18px;
-    margin-bottom: 15px;
+    font-weight: 600;
+    /* padding: 30px; */
     line-height: 1.5;
+    color: #547b69de;
   }
 
   ul {
-    margin-top: 10px;
-    padding-left: 20px;
+    list-style-type: none;
+    margin-top: 20px;
+    padding-left: 0;
+    li {
+      padding: 8px 0;
+      border-bottom: 1px solid #ecf0f1;
+    }
   }
 
   @media (max-width: 768px) {
     max-width: 95%;
+    padding: 20px;
   }
 `;
 
 export const AssociatedStuff = styled.div`
   display: flex;
-  align-items: center;
-  margin: 20px;
-  flex-direction: row;
-  flex-wrap: wrap;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
 `;
 
 export const SmallGrowingPeriodCardContainer = styled.div`
   position: relative;
   border: 1px solid #ddd;
   border-radius: 8px;
-  margin: 10px;
-  padding: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  width: 20vw; /* Set a smaller width */
-  height: 25vh; /* Set a smaller height */
+  width: 20vw;
+  height: 25vh;
   display: flex;
   cursor: pointer;
   flex-direction: column;
@@ -97,4 +87,31 @@ export const SmallGrowingPeriodCardContainer = styled.div`
     color: #fff;
     font-size: 16px;
   }
+`;
+
+export const HeaderContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 20px 0px;
+  justify-content: space-between;
+  h2 {
+    color: #40916c;
+    font-weight: 900;
+    font-size: 28px;
+    /* width: 100%; */
+  }
+  & > div {
+    display: flex;
+    gap: 10px;
+  }
+`;
+
+export const FieldInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+export const CreateButtonContainer = styled.div`
+  display: flex;
 `;
