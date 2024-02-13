@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { routes } from "../../components/statics/routes";
 import { useAuth } from "../../auth/AuthProvider";
+import { LandingPageLogic } from "../../components/statics/interfaces";
 
 
 const useLandingPageLogic = (): LandingPageLogic => {

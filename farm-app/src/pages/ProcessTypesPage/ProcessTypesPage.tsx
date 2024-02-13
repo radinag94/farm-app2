@@ -36,7 +36,7 @@ function ProcessTypesPage() {
               onChange={(e) => setNewProcessType(e.target.value)}
             />
             <CreateStyledButton onClick={createProcessType}>
-              Create Soil
+              Create Process
             </CreateStyledButton>
           </UserRoleHOC>
           <ul>

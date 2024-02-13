@@ -2,26 +2,69 @@ import styled from "styled-components";
 export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: fixed;
+
+  @media (max-width: 768px) {
+    border: 0;
+  }
 `;
 
 export const Thead = styled.thead`
-  background-color: #f0f0f0;
+  @media (max-width: 768px) {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
 `;
 
 export const Th = styled.th`
-  border: 1px solid #ddd;
-  padding: 8px;
+  background-color: #95ba64;
+  color: white;
   text-align: left;
+  padding: 8px;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const Td = styled.td`
-  border: 1px solid #ddd;
+  text-align: left;
   padding: 8px;
+  border-top: 1px solid #ddd;
+
+  @media (max-width: 768px) {
+    display: block;
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+
+    &::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      padding-left: 15px;
+      font-weight: bold;
+      text-align: left;
+    }
+  }
 `;
 
 export const Tr = styled.tr`
   &:nth-child(even) {
     background-color: #f2f2f2;
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 10px;
+    display: block;
+    border-bottom: 2px solid #95ba64;
   }
 `;
 export const StyledGrowingPeriodDetailsPage = styled.div`
@@ -86,5 +129,10 @@ export const HeaderContainer = styled.div`
   & > div {
     display: flex;
     gap: 10px;
+  }
+  @media (max-width: 676px) {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 `;
